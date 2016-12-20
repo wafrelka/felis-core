@@ -29,7 +29,7 @@ module Executor(
 	input logic uart_in_ready,
 	output logic uart_out_valid,
 	input logic[7:0] uart_out_data,
-	input logic uart_out_ready,
+	input logic uart_out_ready
 
 	);
 
@@ -71,13 +71,16 @@ module Executor(
 	BranchExecElement(.reset(elem_reset[4]), .completed(elem_completed[4]),
 		.reg_out(elem_exec_reg_out[4]), .pc_out(branch_exec_pc_out), .*);
 
+	genvar e_i;
 	generate
-		always_comb begin
+		for(e_i = 16; e_i < 32; e_i = e_i + 1) begin: Const16XWiring
 
-			genvar e_i;
-			for(e_i = 16; e_i < 32; e_i++)
+			always_comb begin
+
 				const16_x[e_i] = const16[15];
-			const16_x[15:0] = const16;
+				const16_x[15:0] = const16;
+
+			end
 
 		end
 	endgenerate
@@ -106,8 +109,7 @@ module Executor(
 		elem_reset[3] = reset || !(cat_mem || cat_fpu_mem);
 		elem_reset[4] = reset || !(cat_branch);
 
-		completed = elem_completed[0] || elem_completed[1] ||
-			elem_completed[2] || elem_completed[3] || elem_completed[4];
+		completed = elem_completed[0] | elem_completed[1] | elem_completed[2] | elem_completed[3] | elem_completed[4];
 
 		if(elem_reset[4])
 			exec_pc_out = pc + 4;

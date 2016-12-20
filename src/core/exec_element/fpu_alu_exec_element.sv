@@ -16,7 +16,7 @@ module FpuAluExecElement(
 	input logic[31:0] ft,
 	input logic[31:0] fd,
 
-	output logic[31:0] out,
+	output logic[31:0] out
 
 	);
 

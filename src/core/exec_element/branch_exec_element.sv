@@ -7,6 +7,7 @@ module BranchExecElement(
 	input logic[31:0] pc,
 	input logic[5:0] inst_num,
 	input logic[15:0] const16,
+	input logic[31:0] const16_x,
 	input logic[4:0] shift5,
 	input logic[25:0] addr26,
 	input logic[31:0] rs,
@@ -17,7 +18,7 @@ module BranchExecElement(
 	input logic[31:0] fd,
 
 	output logic[31:0] reg_out,
-	output logic[31:0] pc_out,
+	output logic[31:0] pc_out
 
 	);
 
@@ -51,36 +52,41 @@ module BranchExecElement(
 
 		end else if(!completed) begin
 
-			32, 33, 34, 35, 36, 37, 38: begin // BEQ, BGEZ, BGTZ, BLEZ, BLTZ, BGEZAL, BLTZAL
+			case(inst_num)
 
-				if(cond)
-					pc_out <= pc + const16_x4;
-				else
-					pc_out <= pc + 4;
-				reg_out <= pc + 4;
-				completed <= 1;
+				32, 33, 34, 35, 36, 37, 38: begin
+					// BEQ, BGEZ, BGTZ, BLEZ, BLTZ, BGEZAL, BLTZAL
 
-			end
+					if(cond)
+						pc_out <= pc + const16_x4;
+					else
+						pc_out <= pc + 4;
+					reg_out <= pc + 4;
+					completed <= 1;
 
-			39, 40: begin // J, JAL
+				end
 
-				pc_out[31:28] <= pc[31:28];
-				pc_out[27:2] <= addr26;
-				pc_out[1:0] <= pc[1:0];
-				reg_out <= pc + 4;
-				completed <= 1;
+				39, 40: begin // J, JAL
 
-			end
+					pc_out[31:28] <= pc[31:28];
+					pc_out[27:2] <= addr26;
+					pc_out[1:0] <= pc[1:0];
+					reg_out <= pc + 4;
+					completed <= 1;
 
-			41, 42: begin // JR, JALR
+				end
 
-				pc_out <= rs;
-				reg_out <= pc + 4;
-				completed <= 1;
+				41, 42: begin // JR, JALR
 
-			end
+					pc_out <= rs;
+					reg_out <= pc + 4;
+					completed <= 1;
 
-			default: completed <= 1;
+				end
+
+				default: completed <= 1;
+
+			endcase
 
 		end
 

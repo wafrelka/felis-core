@@ -9,7 +9,7 @@ module Decoder(
 	output logic[4:0] in_reg_num [3],
 	output logic[4:0] out_reg_num,
 	output logic out_general_reg,
-	output logic out_float_reg,
+	output logic out_float_reg
 
 	);
 

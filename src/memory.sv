@@ -1,4 +1,8 @@
-module Memory (
+module Memory #(
+
+	parameter integer MEM_SIZE = 1024
+
+	) (
 
 	input logic clk,
 	input logic reset,
@@ -11,11 +15,9 @@ module Memory (
 	input logic[31:0] out_addr,
 	input logic out_valid,
 	output logic[31:0] out_data,
-	output logic out_ready,
+	output logic out_ready
 
 	);
-
-	parameter integer MEM_SIZE;
 
 	logic[31:0] memory [MEM_SIZE];
 

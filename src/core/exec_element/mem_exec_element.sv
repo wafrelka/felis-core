@@ -26,7 +26,7 @@ module MemExecElement(
 	output logic[31:0] main_mem_out_addr,
 	output logic main_mem_out_valid,
 	input logic[31:0] main_mem_out_data,
-	input logic main_mem_out_ready,
+	input logic main_mem_out_ready
 
 	);
 

@@ -11,7 +11,7 @@ module ProgramLoader(
 	output logic[31:0] inst_mem_in_addr,
 	output logic[31:0] inst_mem_in_data,
 	output logic inst_mem_in_valid,
-	input logic inst_mem_in_ready,
+	input logic inst_mem_in_ready
 
 	);
 

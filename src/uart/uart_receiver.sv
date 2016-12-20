@@ -1,4 +1,9 @@
-module UartReceiver(
+module UartReceiver #(
+
+	parameter logic[31:0] RECHECK_INTERVAL = 5000,
+	parameter logic[31:0] RECV_INTERVAL = 10000
+
+	) (
 
 	input logic clk,
 	input logic reset,
@@ -6,12 +11,9 @@ module UartReceiver(
 	input logic uart_rx,
 	output logic[7:0] data,
 	output logic ok,
-	output logic waiting,
+	output logic waiting
 
 	);
-
-	parameter logic[31:0] RECHECK_INTERVAL;
-	parameter logic[31:0] RECV_INTERVAL;
 
 	logic[2:0] recv_count = 0;
 	logic[31:0] clock_count = 0;

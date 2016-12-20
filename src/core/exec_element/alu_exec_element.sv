@@ -17,7 +17,7 @@ module AluExecElement(
 	input logic[31:0] ft,
 	input logic[31:0] fd,
 
-	output logic[31:0] out,
+	output logic[31:0] out
 
 	);
 
@@ -33,29 +33,29 @@ module AluExecElement(
 
 				8: begin // ADD
 
-					out = rs + rt;
+					out <= rs + rt;
 					completed <= 1;
 
 				end
 
 				9: begin // ADDI
 
-					out = rs + const16_x;
+					out <= rs + const16_x;
 					completed <= 1;
 
 				end
 
 				10: begin // SUB
 
-					out = rs - rt;
+					out <= rs - rt;
 					completed <= 1;
 
 				end
 
 				11: begin // LUI
 
-					out[31:16] = const16;
-					out[15:0] = 16'h0000;
+					out[31:16] <= const16;
+					out[15:0] <= 16'h0000;
 					completed <= 1;
 
 				end
@@ -74,7 +74,7 @@ module AluExecElement(
 
 					// FIXME
 					out[31] <= rs[31];
-					out[30:1] <= rs[29:0]
+					out[30:1] <= rs[29:0];
 					out[0] <= 0;
 					completed <= 1;
 

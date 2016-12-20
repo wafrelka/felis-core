@@ -1,4 +1,4 @@
-module Core(
+module CoreController(
 
 	input logic clk,
 	input logic reset,
@@ -22,7 +22,7 @@ module Core(
 	output logic[31:0] inst_mem_out_addr,
 	output logic inst_mem_out_valid,
 	input logic[31:0] inst_mem_out_data,
-	input logic inst_mem_out_ready,
+	input logic inst_mem_out_ready
 
 	);
 
@@ -66,7 +66,6 @@ module Core(
 				state <= EXEC;
 			else if(state == EXEC && executor_completed)
 				state <= FETCH;
-			end
 
 		end
 
@@ -81,36 +80,34 @@ module Core(
 
 	end
 
+	genvar in_i;
 	generate
-		always_comb begin
+		for(in_i = 0; in_i < 3; in_i = in_i + 1) begin: InRegWiring
 
-			genvar reg_num_idx;
-
-			for(reg_num_idx = 0; reg_num_idx < 3; reg_num_idx++) begin
-				float_in_regs[reg_num_idx] = float_regs[in_reg_num[reg_num_idx]];
-				general_in_regs[reg_num_idx] = general_regs[in_reg_num[reg_num_idx]];
+			always_comb begin
+				float_in_regs[in_i] = float_regs[in_reg_num[in_i]];
+				general_in_regs[in_i] = general_regs[in_reg_num[in_i]];
 			end
 
 		end
 	endgenerate
 
+	genvar out_i;
 	generate
-		always_ff @(posedge clk) begin
+		for(out_i = 0; out_i < 32; out_i = out_i + 1) begin: OutRegWiring
 
-			genvar regs_idx;
-
-			for(regs_idx = 0; regs_idx < 32; regs_idx++) begin
+			always_ff @(posedge clk) begin
 
 				if(reset) begin
 
-					general_regs[regs_idx] <= 0;
-					float_regs[regs_idx] <= 0;
+					general_regs[out_i] <= 0;
+					float_regs[out_i] <= 0;
 
 				end else if(state == EXEC && executor_completed) begin
 
-					if(regs_idx != 0 && regs_idx == out_reg_num && out_general_reg)
+					if(out_i != 0 && out_i == out_reg_num && out_general_reg)
 						general_regs[out_reg_num] <= exec_reg_out;
-					if(regs_idx == out_reg_num && out_float_reg)
+					if(out_i == out_reg_num && out_float_reg)
 						float_regs[out_reg_num] <= exec_reg_out;
 
 				end

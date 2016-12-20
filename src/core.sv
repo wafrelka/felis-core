@@ -22,7 +22,7 @@ module Core(
 	input logic uart_in_ready,
 	output logic uart_out_valid,
 	input logic[7:0] uart_out_data,
-	input logic uart_out_ready,
+	input logic uart_out_ready
 
 	);
 
@@ -42,7 +42,7 @@ module Core(
 	logic[31:0] exec_reg_out;
 	logic[31:0] exec_pc_out;
 
-	CoreController(.*);
+	CoreController core_controller(.*);
 	Fetcher fetcher(.reset(fetcher_reset), .completed(fetcher_completed), .*);
 	Executor executor(.reset(executor_reset), .completed(executor_completed), .*);
 

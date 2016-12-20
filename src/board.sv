@@ -1,7 +1,7 @@
 module Board(
-	input sys_clk,
-	input uart_rx,
-	output uart_tx,
+	input logic sys_clk,
+	input logic uart_rx,
+	output logic uart_tx
 	);
 
 	logic clk;

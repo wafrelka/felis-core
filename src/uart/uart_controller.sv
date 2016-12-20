@@ -1,4 +1,8 @@
-module UartController(
+module UartController #(
+
+	parameter integer BUFFER_BIT_WIDTH = 10
+
+	) (
 
 	input logic clk,
 	input logic reset,
@@ -19,11 +23,9 @@ module UartController(
 	output logic uart_in_ready,
 	input logic uart_out_valid,
 	output logic[7:0] uart_out_data,
-	output logic uart_out_ready,
+	output logic uart_out_ready
 
 	);
-
-	parameter integer BUFFER_BIT_WIDTH;
 
 	logic[BUFFER_BIT_WIDTH : 0][7:0] recv_buffer;
 	logic[BUFFER_BIT_WIDTH : 0] recv_head;
@@ -46,7 +48,7 @@ module UartController(
 		trans_full = (trans_head + 1 == trans_tail);
 	end
 
-	always_ff begin
+	always_ff @(posedge clk) begin
 
 		if(reset) begin
 
@@ -60,7 +62,7 @@ module UartController(
 			if(recv_ok) begin
 
 				if(!recv_full) begin
-					recv_buffer[tail] <= recv_data;
+					recv_buffer[recv_tail] <= recv_data;
 					recv_tail <= recv_tail + 1;
 				end else begin
 					lost <= 1;
@@ -80,7 +82,7 @@ module UartController(
 
 	end
 
-	always_ff begin
+	always_ff @(posedge clk) begin
 
 		if(reset) begin
 

@@ -1,4 +1,11 @@
-module Uart(
+module Uart #(
+
+	parameter integer BUFFER_BIT_WIDTH = 8,
+	parameter logic[31:0] RECHECK_INTERVAL = 5048,
+	parameter logic[31:0] RECV_INTERVAL = 10096,
+	parameter logic[31:0] TRANS_INTERVAL = 10096
+		
+	) (
 
 	input logic clk,
 	input logic reset,
@@ -11,14 +18,9 @@ module Uart(
 	output logic uart_in_ready,
 	input logic uart_out_valid,
 	output logic[7:0] uart_out_data,
-	output logic uart_out_ready,
+	output logic uart_out_ready
 
-	);
-
-	parameter integer BUFFER_BIT_WIDTH = 8;
-	parameter logic[31:0] RECHECK_INTERVAL = 5048;
-	parameter logic[31:0] RECV_INTERVAL = 10096;
-	parameter logic[31:0] TRANS_INTERVAL = 10096;
+	);;
 
 	logic recv_reset;
 	logic[7:0] recv_data;
@@ -30,20 +32,20 @@ module Uart(
 	logic trans_ok;
 	logic trans_busy;
 
-	UartReceiver receiver(
+	UartReceiver #(RECHECK_INTERVAL, RECV_INTERVAL) receiver(
 		.reset(recv_reset),
 		.data(recv_data),
 		.ok(recv_ok),
 		.waiting(recv_waiting),
-	.*) #(RECHECK_INTERVAL, RECV_INTERVAL);
+	.*);
 
-	UartTransmitter transmitter(
+	UartTransmitter #(TRANS_INTERVAL) transmitter(
 		.reset(trans_reset),
 		.data(trans_data),
 		.ok(trans_ok),
 		.busy(trans_busy),
-	.*) #(trans_INTERVAL);
+	.*);
 
-	UartController controller(.*) #(BUFFER_BIT_WIDTH);
+	UartController #(BUFFER_BIT_WIDTH) controller(.*);
 
 endmodule

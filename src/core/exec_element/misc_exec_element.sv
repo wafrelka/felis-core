@@ -23,7 +23,7 @@ module MiscExecElement(
 	input logic uart_in_ready,
 	output logic uart_out_valid,
 	input logic[7:0] uart_out_data,
-	input logic uart_out_ready,
+	input logic uart_out_ready
 
 	);
 

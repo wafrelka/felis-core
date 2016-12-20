@@ -10,7 +10,7 @@ module Fetcher(
 	output logic[31:0] inst_mem_out_addr,
 	output logic inst_mem_out_valid,
 	input logic[31:0] inst_mem_out_data,
-	input logic inst_mem_out_ready,
+	input logic inst_mem_out_ready
 
 	);
 

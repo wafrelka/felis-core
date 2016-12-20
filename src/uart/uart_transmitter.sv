@@ -1,4 +1,8 @@
-module UartTransmitter(
+module UartTransmitter #(
+
+	parameter logic[31:0] TRANS_INTERVAL = 10000
+
+	) (
 
 	input logic clk,
 	input logic reset,
@@ -6,21 +10,20 @@ module UartTransmitter(
 	output logic uart_tx,
 	input logic[7:0] data,
 	input logic ok,
-	output logic busy,
+	output logic busy
 
 	);
-
-	parameter logic[31:0] TRANS_INTERVAL;
-
-	logic[2:0] trans_count = 0;
-	logic[31:0] clock_count = 0;
-
-	integer state;
 
 	localparam integer WAITING = 0;
 	localparam integer TRANSMITTING = 1;
 	localparam integer HOLDING = 2;
 	localparam integer FINISHED = 3;
+
+	integer state;
+
+	logic[2:0] trans_count = 0;
+	logic[31:0] clock_count = 0;
+	logic[31:0] buffer;
 
 	always_comb begin
 
@@ -82,6 +85,8 @@ module UartTransmitter(
 					clock_count <= clock_count + 1;
 				else
 					state <= WAITING;
+
+			end
 
 		end
 

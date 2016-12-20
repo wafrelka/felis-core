@@ -1,7 +1,7 @@
 module Chip(
-	input clk,
-	input uart_rx,
-	output uart_tx,
+	input logic clk,
+	input logic uart_rx,
+	output logic uart_tx
 	);
 
 	logic[31:0] inst_mem_in_addr;
@@ -44,7 +44,7 @@ module Chip(
 	Core core(.reset(core_reset), .uart_out_valid(uart_out_valid_core), .*);
 	Uart uart(.reset(uart_reset), .*);
 
-	Memory inst_mem(
+	Memory #(65535) inst_mem(
 		.clk(clk),
 		.reset(inst_mem_reset),
 		.in_addr(inst_mem_in_addr),
@@ -54,10 +54,10 @@ module Chip(
 		.out_addr(inst_mem_out_addr),
 		.out_valid(inst_mem_out_valid),
 		.out_data(inst_mem_out_data),
-		.out_ready(inst_mem_out_ready),
+		.out_ready(inst_mem_out_ready)
 	);
 
-	Memory main_mem(
+	Memory #(65535 * 4) main_mem(
 		.clk(clk),
 		.reset(main_mem_reset),
 		.in_addr(main_mem_in_addr),
@@ -67,7 +67,7 @@ module Chip(
 		.out_addr(main_mem_out_addr),
 		.out_valid(main_mem_out_valid),
 		.out_data(main_mem_out_data),
-		.out_ready(main_mem_out_ready),
+		.out_ready(main_mem_out_ready)
 	);
 
 	ProgramLoader prog_loader(
@@ -80,7 +80,7 @@ module Chip(
 		.inst_mem_in_addr(inst_mem_in_addr),
 		.inst_mem_in_data(inst_mem_in_data),
 		.inst_mem_in_valid(inst_mem_in_valid),
-		.inst_mem_in_ready(inst_mem_in_ready),
+		.inst_mem_in_ready(inst_mem_in_ready)
 	);
 
 	always_comb begin
