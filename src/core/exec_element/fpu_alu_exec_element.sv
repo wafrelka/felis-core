@@ -1,8 +1,8 @@
 module FpuAluExecElement(
 
-	input clk,
-	input reset,
-	output completed,
+	input logic clk,
+	input logic reset,
+	output logic completed,
 
 	input logic[31:0] pc,
 	input logic[5:0] inst_num,

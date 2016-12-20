@@ -3,8 +3,8 @@ module CoreController(
 	input logic clk,
 	input logic reset,
 
-	output fetcher_reset,
-	input fetcher_completed,
+	output logic fetcher_reset,
+	input logic fetcher_completed,
 	output logic[31:0] pc,
 	input logic[31:0] instruction,
 
@@ -33,8 +33,8 @@ module CoreController(
 
 	integer state;
 
-	logic[4:0][31:0] general_regs;
-	logic[4:0][31:0] float_regs;
+	logic[31:0] general_regs [32];
+	logic[31:0] float_regs [32];
 
 	logic[4:0] in_reg_num [3];
 	logic[4:0] out_reg_num;

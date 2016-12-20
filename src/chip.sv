@@ -40,9 +40,10 @@ module Chip(
 	logic pl_completed;
 
 	logic[4:0] reset_count = 15;
+	logic uart_lost;
 
 	Core core(.reset(core_reset), .uart_out_valid(uart_out_valid_core), .*);
-	Uart uart(.reset(uart_reset), .*);
+	Uart uart(.reset(uart_reset), .lost(uart_lost), .*);
 
 	Memory #(65535) inst_mem(
 		.clk(clk),

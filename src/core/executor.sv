@@ -1,8 +1,8 @@
 module Executor(
 
-	input clk,
-	input reset,
-	output completed,
+	input logic clk,
+	input logic reset,
+	output logic completed,
 
 	input logic[31:0] pc,
 	input logic[5:0] inst_num,
@@ -56,19 +56,24 @@ module Executor(
 
 	logic[31:0] const16_x;
 
-	MiscExecElement(.reset(elem_reset[0]), .completed(elem_completed[0]),
+	MiscExecElement misc_exec_elem(
+		.reset(elem_reset[0]), .completed(elem_completed[0]),
 		.out(elem_exec_reg_out[0]), .*);
 
-	AluExecElement(.reset(elem_reset[1]), .completed(elem_completed[1]),
+	AluExecElement alu_exec_elem(
+		.reset(elem_reset[1]), .completed(elem_completed[1]),
 		.out(elem_exec_reg_out[1]), .*);
 
-	FpuAluExecElement(.reset(elem_reset[2]), .completed(elem_completed[2]),
+	FpuAluExecElement fpu_alu_exec_elem(
+		.reset(elem_reset[2]), .completed(elem_completed[2]),
 		.out(elem_exec_reg_out[2]),  .*);
 
-	MemExecElement(.reset(elem_reset[3]), .completed(elem_completed[3]),
+	MemExecElement mem_exec_elem(
+		.reset(elem_reset[3]), .completed(elem_completed[3]),
 		.out(elem_exec_reg_out[3]),  .*);
 
-	BranchExecElement(.reset(elem_reset[4]), .completed(elem_completed[4]),
+	BranchExecElement branch_exec_elem(
+		.reset(elem_reset[4]), .completed(elem_completed[4]),
 		.reg_out(elem_exec_reg_out[4]), .pc_out(branch_exec_pc_out), .*);
 
 	genvar e_i;
@@ -109,7 +114,8 @@ module Executor(
 		elem_reset[3] = reset || !(cat_mem || cat_fpu_mem);
 		elem_reset[4] = reset || !(cat_branch);
 
-		completed = elem_completed[0] | elem_completed[1] | elem_completed[2] | elem_completed[3] | elem_completed[4];
+		completed = elem_completed[0] || elem_completed[1] ||
+			elem_completed[2] || elem_completed[3] || elem_completed[4];
 
 		if(elem_reset[4])
 			exec_pc_out = pc + 4;

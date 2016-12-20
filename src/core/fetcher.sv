@@ -1,8 +1,8 @@
 module Fetcher(
 
-	input clk,
-	input reset,
-	output completed,
+	input logic clk,
+	input logic reset,
+	output logic completed,
 
 	input logic[31:0] pc,
 	output logic[31:0] instruction,
