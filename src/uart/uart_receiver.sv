@@ -75,6 +75,7 @@ module UartReceiver #(
 			end else begin // FINISHED
 
 				ok <= 0;
+				clock_count <= clock_count + 1;
 				if(clock_count + 1 >= RECV_INTERVAL)
 					state <= WAITING;
 

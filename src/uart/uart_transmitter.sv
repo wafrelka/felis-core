@@ -76,10 +76,9 @@ module UartTransmitter #(
 
 			end else begin // FINISHED
 
-				if(clock_count + 1 < TRANS_INTERVAL)
-					clock_count <= clock_count + 1;
-				else
-					state <= WAITING;
+			clock_count <= clock_count + 1;
+			if(clock_count + 1 >= TRANS_INTERVAL)
+				state <= WAITING;
 
 			end
 
