@@ -27,16 +27,12 @@ module UartController #(
 	);
 
 	logic[7:0] recv_buffer [BUFFER_SIZE];
-	logic[31:0] recv_head;
-	logic[31:0] recv_tail;
+	logic[31:0] recv_head, recv_tail;
 	logic[7:0] trans_buffer [BUFFER_SIZE];
-	logic[31:0] trans_head;
-	logic[31:0] trans_tail;
+	logic[31:0] trans_head, trans_tail;
 
-	logic recv_empty;
-	logic recv_full;
-	logic trans_empty;
-	logic trans_full;
+	logic recv_empty, recv_full;
+	logic trans_empty, trans_full;
 
 	always_comb begin
 		recv_reset = reset;

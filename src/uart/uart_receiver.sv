@@ -15,15 +15,10 @@ module UartReceiver #(
 
 	);
 
+	enum integer {WAITING, DETECTED, RECVING, FINISHED} state;
+
 	logic[2:0] recv_count = 0;
 	logic[31:0] clock_count = 0;
-
-	integer state;
-
-	localparam integer WAITING = 0;
-	localparam integer DETECTED = 1;
-	localparam integer RECVING = 2;
-	localparam integer FINISHED = 3;
 
 	always_comb begin
 

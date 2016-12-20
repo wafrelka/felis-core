@@ -15,13 +15,7 @@ module ProgramLoader(
 
 	);
 
-	localparam integer INIT = 0;
-	localparam integer READING_SIZE = 1;
-	localparam integer READING_PROG = 2;
-	localparam integer STORING_PROG = 3;
-	localparam integer COMPLETED = 4;
-
-	integer state;
+	enum integer {INIT, READING_SIZE, READING_PROG, STORING_PROG, COMPLETED} state;
 
 	logic[31:0] prog_counter;
 	logic[31:0] prog_size;

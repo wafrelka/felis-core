@@ -21,12 +21,7 @@ module CoreController(
 
 	);
 
-	localparam integer INIT = 0;
-	localparam integer FETCH = 1;
-	localparam integer DECODE = 2;
-	localparam integer EXEC = 3;
-
-	integer state;
+	enum integer {INIT, FETCH, DECODE, EXEC} state;
 
 	logic[31:0] general_regs [32];
 	logic[31:0] float_regs [32];

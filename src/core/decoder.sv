@@ -13,14 +13,8 @@ module Decoder(
 
 	);
 
-	logic cat_misc;
-	logic cat_addsub;
-	logic cat_muldiv;
-	logic cat_bit;
-	logic cat_mem;
-	logic cat_branch;
-	logic cat_fpu_mem;
-	logic cat_fpu_alu;
+	logic cat_misc, cat_addsub, cat_muldiv, cat_bit,
+		cat_mem, cat_branch, cat_fpu_mem, cat_fpu_alu;
 
 	always_comb begin
 

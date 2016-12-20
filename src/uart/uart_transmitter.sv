@@ -14,12 +14,7 @@ module UartTransmitter #(
 
 	);
 
-	localparam integer WAITING = 0;
-	localparam integer TRANSMITTING = 1;
-	localparam integer HOLDING = 2;
-	localparam integer FINISHED = 3;
-
-	integer state;
+	enum integer {WAITING, TRANSMITTING, HOLDING, FINISHED} state;
 
 	logic[2:0] trans_count = 0;
 	logic[31:0] clock_count = 0;
