@@ -17,12 +17,7 @@ module CoreController(
 	output logic[31:0] float_in_regs [3],
 	output logic[31:0] general_in_regs [3],
 	input logic[31:0] exec_reg_out,
-	input logic[31:0] exec_pc_out,
-
-	output logic[31:0] inst_mem_out_addr,
-	output logic inst_mem_out_valid,
-	input logic[31:0] inst_mem_out_data,
-	input logic inst_mem_out_ready
+	input logic[31:0] exec_pc_out
 
 	);
 
