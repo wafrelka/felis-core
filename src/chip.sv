@@ -45,7 +45,7 @@ module Chip(
 	Core core(.reset(core_reset), .uart_out_valid(uart_out_valid_core), .*);
 	Uart uart(.reset(uart_reset), .lost(uart_lost), .*);
 
-	Memory #(65535) inst_mem(
+	Memory #(65536) inst_mem(
 		.clk(clk),
 		.reset(inst_mem_reset),
 		.in_addr(inst_mem_in_addr),
@@ -58,7 +58,7 @@ module Chip(
 		.out_ready(inst_mem_out_ready)
 	);
 
-	Memory #(65535 * 4) main_mem(
+	Memory #(65536 * 4) main_mem(
 		.clk(clk),
 		.reset(main_mem_reset),
 		.in_addr(main_mem_in_addr),
