@@ -122,6 +122,17 @@ module Executor(
 		else
 			exec_pc_out = branch_exec_pc_out;
 
+		if(!elem_reset[0])
+			exec_reg_out = elem_exec_reg_out[0];
+		else if(!elem_reset[1])
+			exec_reg_out = elem_exec_reg_out[1];
+		else if(!elem_reset[2])
+			exec_reg_out = elem_exec_reg_out[2];
+		else if(!elem_reset[3])
+			exec_reg_out = elem_exec_reg_out[3];
+		else
+			exec_reg_out = elem_exec_reg_out[4];
+
 
 	end
 
