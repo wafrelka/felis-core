@@ -1,6 +1,6 @@
 module Uart #(
 
-	parameter integer BUFFER_SIZE = 2048,
+	parameter integer BUFFER_BIT_WIDTH = 10,
 	parameter logic[31:0] RECHECK_INTERVAL = 5048,
 	parameter logic[31:0] RECV_INTERVAL = 10096,
 	parameter logic[31:0] TRANS_INTERVAL = 10096
@@ -45,6 +45,6 @@ module Uart #(
 		.busy(trans_busy),
 	.*);
 
-	UartController #(BUFFER_SIZE) controller(.*);
+	UartController #(BUFFER_BIT_WIDTH) controller(.*);
 
 endmodule

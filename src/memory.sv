@@ -1,6 +1,6 @@
 module Memory #(
 
-	parameter integer MEM_SIZE = 1024
+	parameter integer MEM_BIT_WIDTH = 10
 
 	) (
 
@@ -19,7 +19,7 @@ module Memory #(
 
 	);
 
-	logic[31:0] memory [MEM_SIZE];
+	logic[31:0] memory [2 ** MEM_BIT_WIDTH];
 
 	always_ff @(posedge clk) begin
 
