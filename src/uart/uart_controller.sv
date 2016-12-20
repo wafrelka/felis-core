@@ -1,6 +1,6 @@
 module UartController #(
 
-	parameter integer BUFFER_BIT_WIDTH = 10
+	parameter integer BUFFER_SIZE = 2048
 
 	) (
 
@@ -11,7 +11,6 @@ module UartController #(
 	output logic recv_reset,
 	input logic[7:0] recv_data,
 	input logic recv_ok,
-	input logic recv_waiting,
 
 	output logic trans_reset,
 	output logic[7:0] trans_data,
@@ -27,12 +26,12 @@ module UartController #(
 
 	);
 
-	logic[BUFFER_BIT_WIDTH : 0][7:0] recv_buffer;
-	logic[BUFFER_BIT_WIDTH : 0] recv_head;
-	logic[BUFFER_BIT_WIDTH : 0] recv_tail;
-	logic[BUFFER_BIT_WIDTH : 0][7:0] trans_buffer;
-	logic[BUFFER_BIT_WIDTH : 0] trans_head;
-	logic[BUFFER_BIT_WIDTH : 0] trans_tail;
+	logic[7:0] recv_buffer [BUFFER_SIZE];
+	logic[31:0] recv_head;
+	logic[31:0] recv_tail;
+	logic[7:0] trans_buffer [BUFFER_SIZE];
+	logic[31:0] trans_head;
+	logic[31:0] trans_tail;
 
 	logic recv_empty;
 	logic recv_full;
