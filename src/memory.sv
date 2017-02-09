@@ -1,3 +1,5 @@
+`timescale 1ps / 100fs
+
 module Memory #(
 
 	parameter integer MEM_BIT_WIDTH = 10

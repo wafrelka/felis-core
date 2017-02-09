@@ -1,3 +1,5 @@
+`timescale 1ps / 100fs
+
 module Board(
 	input logic sys_clk,
 	input logic uart_rx,

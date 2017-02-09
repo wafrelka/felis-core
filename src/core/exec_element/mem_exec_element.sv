@@ -1,3 +1,5 @@
+`timescale 1ps / 100fs
+
 module MemExecElement(
 
 	input logic clk,

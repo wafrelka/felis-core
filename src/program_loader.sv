@@ -1,3 +1,5 @@
+`timescale 1ps / 100fs
+
 module ProgramLoader(
 
 	input logic clk,

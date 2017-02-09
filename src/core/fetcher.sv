@@ -1,3 +1,5 @@
+`timescale 1ps / 100fs
+
 module Fetcher(
 
 	input logic clk,

@@ -1,3 +1,5 @@
+`timescale 1ps / 100fs
+
 module Chip(
 	input logic clk,
 	input logic uart_rx,

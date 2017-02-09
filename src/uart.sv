@@ -1,3 +1,5 @@
+`timescale 1ps / 100fs
+
 module Uart #(
 
 	parameter integer BUFFER_BIT_WIDTH = 10,

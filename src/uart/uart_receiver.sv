@@ -1,3 +1,5 @@
+`timescale 1ps / 100fs
+
 module UartReceiver #(
 
 	parameter logic[31:0] RECHECK_INTERVAL = 5000,

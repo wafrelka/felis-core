@@ -1,3 +1,5 @@
+`timescale 1ps / 100fs
+
 module UartTransmitter #(
 
 	parameter logic[31:0] TRANS_INTERVAL = 10000
