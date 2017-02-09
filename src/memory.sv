@@ -25,7 +25,12 @@ module Memory #(
 
 	always_ff @(posedge clk) begin
 
-		if(!reset) begin
+		if(reset) begin
+
+			in_ready <= 0;
+			out_ready <= 0;
+
+		end else begin
 
 			if(in_valid && !in_ready) begin
 
