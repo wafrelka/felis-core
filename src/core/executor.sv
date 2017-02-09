@@ -5,6 +5,7 @@ module Executor(
 	input logic clk,
 	input logic reset,
 	output logic completed,
+	output logic halted,
 
 	input logic[31:0] pc,
 	input logic[5:0] inst_num,
@@ -49,7 +50,7 @@ module Executor(
 
 	MiscExecElement misc_exec_elem(
 		.reset(elem_reset[0]), .completed(elem_completed[0]),
-		.out(elem_exec_reg_out[0]), .*);
+		.out(elem_exec_reg_out[0]), .halted(halted), .*);
 
 	AluExecElement alu_exec_elem(
 		.reset(elem_reset[1]), .completed(elem_completed[1]),
@@ -123,7 +124,6 @@ module Executor(
 			exec_reg_out = elem_exec_reg_out[3];
 		else
 			exec_reg_out = elem_exec_reg_out[4];
-
 
 	end
 

@@ -5,6 +5,7 @@ module MiscExecElement(
 	input logic clk,
 	input logic reset,
 	output logic completed,
+	output logic halted,
 
 	input logic[31:0] pc,
 	input logic[5:0] inst_num,
@@ -29,6 +30,7 @@ module MiscExecElement(
 			completed <= 0;
 			uart_in_valid <= 0;
 			uart_out_valid <= 0;
+			halted <= 0;
 
 		end else if(!completed) begin
 
@@ -43,6 +45,7 @@ module MiscExecElement(
 				5: begin // HALT
 
 					out <= 32'hffffffff;
+					halted <= 1;
 
 				end
 
