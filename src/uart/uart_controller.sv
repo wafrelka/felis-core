@@ -24,7 +24,9 @@ module UartController #(
 	output logic uart_in_ready,
 	input logic uart_out_valid,
 	output logic[7:0] uart_out_data,
-	output logic uart_out_ready
+	output logic uart_out_ready,
+
+	output logic[BUFFER_BIT_WIDTH-1:0] in_buffer_length
 
 	);
 
@@ -43,6 +45,7 @@ module UartController #(
 		recv_full = (recv_head + 1 == recv_tail);
 		trans_empty = (trans_head == trans_tail);
 		trans_full = (trans_head + 1 == trans_tail);
+		in_buffer_length = (recv_head - recv_tail);
 	end
 
 	always_ff @(posedge clk) begin
