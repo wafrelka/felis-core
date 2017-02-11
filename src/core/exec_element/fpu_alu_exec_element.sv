@@ -30,6 +30,7 @@ module FpuAluExecElement(
 
 		end else if(!completed) begin
 
+			out <= 0;
 			completed <= 1;
 			// TODO
 
