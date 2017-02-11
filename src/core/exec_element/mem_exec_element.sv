@@ -6,7 +6,6 @@ module MemExecElement(
 	input logic reset,
 	output logic completed,
 
-	input logic[31:0] pc,
 	input logic[5:0] inst_num,
 	input logic[31:0] const16_x,
 	input logic[25:0] addr26,
