@@ -29,7 +29,7 @@ module BranchExecElement(
 			34: cond = (rs[31] == 0 && rs[30:0] != 0);
 			35: cond = (rs[31] == 1 || rs[30:0] == 0);
 			36: cond = (rs[31] == 1);
-			37: cond = (rs[31] == 0 || rs[30:0] != 0);
+			37: cond = (rs[31] == 0);
 			38: cond = (rs[31] == 1);
 			default: cond = 1;
 		endcase
