@@ -42,10 +42,10 @@ module UartController #(
 		recv_reset = reset;
 		trans_reset = reset;
 		recv_empty = (recv_head == recv_tail);
-		recv_full = (recv_head + 1 == recv_tail);
+		recv_full = (recv_tail + 1 == recv_head);
 		trans_empty = (trans_head == trans_tail);
-		trans_full = (trans_head + 1 == trans_tail);
-		in_buffer_length = (recv_head - recv_tail);
+		trans_full = (trans_tail + 1 == trans_head);
+		in_buffer_length = (recv_tail - recv_head);
 	end
 
 	always_ff @(posedge clk) begin
