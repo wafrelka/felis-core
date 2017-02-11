@@ -10,7 +10,7 @@ module AluExecElement(
 	input logic[5:0] inst_num,
 	input logic[15:0] const16,
 	input logic[31:0] const16_x,
-	// input logic[4:0] shift5,
+	input logic[4:0] shift5,
 	input logic[31:0] rs,
 	input logic[31:0] rt,
 
@@ -18,11 +18,87 @@ module AluExecElement(
 
 	);
 
+	logic signed [31:0] signed_const16_x;
+	logic signed [31:0] signed_rs;
+	logic signed [31:0] signed_rt;
+	logic signed [63:0] signed_mul_out;
+	logic mul_wait;
+
+	logic[31:0] shift [6];
+	logic[31:0] div_a, div_b, div_c;
+	logic div_enabled, div_completed;
+
+	Divider divider(.clk(clk), .a(div_a), .b(div_b), .c(div_c),
+		.enabled(div_enabled), .completed(div_completed));
+
+	always_comb begin
+
+		case(inst_num)
+
+			12: div_b = rt;
+			14: div_b = const16_x;
+			default: div_b = 1;
+
+		endcase
+
+		signed_const16_x = const16_x;
+		signed_rs = rs;
+		signed_rt = rt;
+		div_a = rs;
+
+	end
+
+	always_comb begin
+		shift[0] = rs;
+	end
+
+	genvar sbit;
+
+	generate
+		for(sbit = 0; sbit < 5; ++sbit) begin: ShiftWiring
+
+			always_comb begin
+
+				if(shift5[sbit]) begin
+
+					case(inst_num)
+
+						16: begin // Rs << Shift5
+							shift[sbit + 1][31:2**sbit] = shift[sbit][31-2**sbit:0];
+							shift[sbit + 1][2**sbit-1:0] = 0;
+						end
+
+						17: begin // Rs_x >> Shift5
+							shift[sbit + 1][31-2**sbit:0] = shift[sbit][31:2**sbit];
+							shift[sbit + 1][31:32-2**sbit] = shift[0][31];
+						end
+
+						18: begin // Rs >> Shift5
+							shift[sbit + 1][31-2**sbit:0] = shift[sbit][31:2**sbit];
+							shift[sbit + 1][31:32-2**sbit] = 0;
+						end
+
+						default: shift[sbit + 1] = shift[sbit];
+
+					endcase
+
+				end else begin
+
+					shift[sbit + 1] = shift[sbit];
+
+				end
+			end
+
+		end
+	endgenerate
+
 	always_ff @(posedge clk) begin
 
 		if(reset) begin
 
 			completed <= 0;
+			div_enabled <= 0;
+			mul_wait <= 0;
 
 		end else if(!completed) begin
 
@@ -57,43 +133,36 @@ module AluExecElement(
 
 				end
 
-				12: begin // DIV
+				12, 14: begin // DIV, DIVI
 
-					// FIXME
-					out[31] <= rs[31];
-					out[30] <= rs[31];
-					out[29:0] <= rs[30:1];
-					completed <= 1;
-
-				end
-
-				13: begin // MULT
-
-					// FIXME
-					out[31] <= rs[31];
-					out[30:1] <= rs[29:0];
-					out[0] <= 0;
-					completed <= 1;
+					if(!div_enabled) begin
+						div_enabled <= 1;
+					end else if(div_completed) begin
+						out <= div_c;
+						div_enabled <= 0;
+						completed <= 1;
+					end
 
 				end
 
-				16: begin // SLL
+				13, 15: begin // MULT, MULTI
 
-					// TODO
-					completed <= 1;
+					if(!mul_wait) begin
+						mul_wait <= 1;
+						if(inst_num == 15)
+							signed_mul_out <= signed_rs * signed_const16_x;
+						else
+							signed_mul_out <= signed_rs * signed_rt;
+					end else begin
+						out <= signed_mul_out;
+						completed <= 1;
+					end
 
 				end
 
-				17: begin // SRA
+				16, 17, 18: begin // SLL, SRA, SRL
 
-					// TODO
-					completed <= 1;
-
-				end
-
-				18: begin // SRL
-
-					// TODO
+					out <= shift[5];
 					completed <= 1;
 
 				end
