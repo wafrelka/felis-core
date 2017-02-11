@@ -2,7 +2,7 @@
 
 module Memory #(
 
-	parameter integer MEM_BIT_WIDTH = 10
+	parameter integer MEM_BIT_WIDTH = 16
 
 	) (
 
