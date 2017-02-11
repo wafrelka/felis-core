@@ -14,6 +14,7 @@ module Uart #(
 	input logic uart_rx,
 	output logic uart_tx,
 	output logic lost,
+	output logic busy,
 
 	input logic[7:0] uart_in_data,
 	input logic uart_in_valid,
@@ -24,7 +25,7 @@ module Uart #(
 
 	output logic[BUFFER_BIT_WIDTH-1:0] in_buffer_length
 
-	);;
+	);
 
 	logic recv_reset;
 	logic[7:0] recv_data;
@@ -34,6 +35,10 @@ module Uart #(
 	logic[7:0] trans_data;
 	logic trans_ok;
 	logic trans_busy;
+
+	always_comb begin
+		busy = trans_busy;
+	end
 
 	UartReceiver #(RECHECK_INTERVAL, RECV_INTERVAL) receiver(
 		.reset(recv_reset),
