@@ -30,7 +30,7 @@ module Decoder(
 
 		cat_misc = (inst_num >= 4 && inst_num < 8);
 		cat_addsub = (inst_num >= 8 && inst_num < 12);
-		cat_muldiv = (inst_num >= 12 && inst_num < 14);
+		cat_muldiv = (inst_num >= 12 && inst_num < 16);
 		cat_bit = (inst_num >= 16 && inst_num < 28);
 		cat_mem = (inst_num >= 28 && inst_num < 32);
 		cat_branch = (inst_num >= 32 && inst_num < 48);
@@ -43,13 +43,16 @@ module Decoder(
 
 		case(inst_num)
 
-			9, 11, 21, 23, 25, 28, 42, 48, 52, 53, 54, 55, 60, 61, 62:
+			9, 11, 14, 15, 21, 23, 25, 28, 42, 53: // Rt
 				out_reg_num = in_reg_num[1];
 
-			37, 38, 40:
+			48, 52, 54, 55, 60, 61, 62, 63: // Ft
+				out_reg_num = in_reg_num[1];
+
+			37, 38, 40: // Ra
 				out_reg_num = 31;
 
-			default:
+			default: // Rd, Fd
 				out_reg_num = in_reg_num[2];
 
 		endcase

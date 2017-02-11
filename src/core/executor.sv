@@ -93,7 +93,7 @@ module Executor(
 
 		cat_misc = (inst_num >= 4 && inst_num < 8);
 		cat_addsub = (inst_num >= 8 && inst_num < 12);
-		cat_muldiv = (inst_num >= 12 && inst_num < 14);
+		cat_muldiv = (inst_num >= 12 && inst_num < 16);
 		cat_bit = (inst_num >= 16 && inst_num < 28);
 		cat_mem = (inst_num >= 28 && inst_num < 32);
 		cat_branch = (inst_num >= 32 && inst_num < 48);
