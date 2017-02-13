@@ -35,14 +35,14 @@ module UartReceiverTester();
 		stop(4);
 		assert(waiting == 1 && ok == 0);
 
-		uart_rx = 0;
+		uart_rx = 0; // starting bit
 		stop(1);
 		assert(waiting == 0 && ok == 0);
 		stop(4);
 		assert(waiting == 0 && ok == 0);
 
 		stop(3);
-		uart_rx = 1; stop(8);
+		uart_rx = 1; stop(8); // bit 0
 		uart_rx = 0; stop(8);
 		uart_rx = 1; stop(8);
 		uart_rx = 1; stop(8);
@@ -57,7 +57,7 @@ module UartReceiverTester();
 		assert(waiting == 0 && ok == 0);
 		stop(2);
 		assert(waiting == 0 && ok == 0);
-		uart_rx = 1; stop(1);
+		uart_rx = 1; stop(8); // ending bit
 		assert(waiting == 1 && ok == 0);
 
 		stop(7);
@@ -75,7 +75,7 @@ module UartReceiverTester();
 		assert(data == 8'b10000111);
 
 		stop(3);
-		uart_rx = 1; stop(1);
+		uart_rx = 1; stop(8);
 		assert(waiting == 1);
 
 		$finish();
