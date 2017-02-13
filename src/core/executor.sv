@@ -120,8 +120,10 @@ module Executor(
 			exec_reg_out = elem_exec_reg_out[2];
 		else if(!elem_reset[3])
 			exec_reg_out = elem_exec_reg_out[3];
-		else
+		else if(!elem_reset[4])
 			exec_reg_out = elem_exec_reg_out[4];
+		else
+			exec_reg_out = 32'hffffffff;
 
 	end
 
