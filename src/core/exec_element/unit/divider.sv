@@ -15,11 +15,12 @@ module Divider(
 
 	logic div_valid;
 	logic div_ready;
+	logic div_sent;
 	logic[31:0] divisor;
 	logic[31:0] dividend;
 	logic[63:0] div_output;
 
-	divider_ip div_submod (
+	DividerIP div_submod (
 		.aclk(clk),
 		.s_axis_divisor_tvalid(div_valid),
 		.s_axis_divisor_tdata(divisor),
@@ -39,15 +40,22 @@ module Divider(
 		if(!enabled) begin
 
 			div_valid <= 0;
+			div_sent <= 0;
 			completed <= 0;
 
 		end else begin
 
-			if(!div_valid) begin
+			if(!div_valid && !div_sent && !completed) begin
 				div_valid <= 1;
-			end else if(div_ready) begin
-				completed <= 1;
+				div_sent <= 1;
+			end else begin
+				div_valid <= 0;
+			end
+
+			if(div_ready) begin
+				div_sent <= 0;
 				c <= div_output[63:32];
+				completed <= 1;
 			end
 
 		end
