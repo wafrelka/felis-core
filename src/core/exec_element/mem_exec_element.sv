@@ -74,7 +74,10 @@ module MemExecElement(
 					if(!main_mem_in_valid) begin
 						main_mem_in_valid <= 1;
 						main_mem_in_addr <= addr;
-						main_mem_in_data <= (inst_num < 32 ? rs : fs);
+						if(inst_num < 32)
+							main_mem_in_data <= rs;
+						else
+							main_mem_in_data <= fs;
 					end else if(main_mem_in_ready) begin
 						main_mem_in_valid <= 0;
 						completed <= 1;
