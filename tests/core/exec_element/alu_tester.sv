@@ -52,6 +52,10 @@ module AluElemTester();
 
 		// check(inst, const16, shift5, rs, rt, expected)
 
+		// ADD
+		check(8, 0, 0, 17, 255, (17 + 255));
+		check(8, 0, 0, 17, (0-255), (17 - 255));
+
 		// ADDI
 		check(9, 16'h00ff, 0, 17, 0, (17 + 255));
 		check(9, minus(16'h00ff), 0, 17, 0, (17 - 255));
@@ -59,6 +63,9 @@ module AluElemTester();
 		// SUB
 		check(10, 0, 0, 17, 18, 32'hffffffff);
 		check(10, 0, 0, 32'ha9876543, 32'h98765432, 32'h11111111);
+
+		// LUI
+		check(11, 16'h35f1, 0, 0, 0, 32'h35f10000);
 
 		// DIV, DIVI
 		check(12, 0, 0, 32'h1234567, 32'hdab, 5455);
@@ -82,6 +89,11 @@ module AluElemTester();
 		check(22, 0, 0, 4'b0011, 4'b0101, 4'b0111); // OR
 		check(24, 0, 0, 4'b0011, 4'b0101, 4'b0110); // XOR
 		check(26, 0, 0, 4'b0011, 4'b0101, ~(32'b0111)); // NOR
+
+		// ANDI, ORI, XORI
+		check(21, 4'b0101, 0, 4'b0011, 0, 4'b0001); // ANDI
+		check(23, 4'b0101, 0, 4'b0011, 0, 4'b0111); // ORI
+		check(25, 4'b0101, 0, 4'b0011, 0, 4'b0110); // XORI
 
 		stop(2);
 
