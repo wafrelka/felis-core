@@ -73,10 +73,7 @@ module Executor(
 		for(e_i = 16; e_i < 32; e_i = e_i + 1) begin: Const16XWiring
 
 			always_comb begin
-
 				const16_x[e_i] = const16[15];
-				const16_x[15:0] = const16;
-
 			end
 
 		end
@@ -84,6 +81,7 @@ module Executor(
 
 	always_comb begin
 
+		const16_x[15:0] = const16;
 		rs = general_in_regs[0];
 		rt = general_in_regs[1];
 		rd = general_in_regs[2];
