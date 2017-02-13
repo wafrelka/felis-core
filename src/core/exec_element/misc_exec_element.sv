@@ -37,6 +37,7 @@ module MiscExecElement(
 
 				4: begin // NOP
 
+					out <= 32'hffffffff;
 					completed <= 1;
 
 				end
@@ -68,6 +69,7 @@ module MiscExecElement(
 						uart_in_data <= rs[7:0];
 					end else if(uart_in_ready) begin
 						uart_in_valid <= 0;
+						out <= 32'hffffffff;
 						completed <= 1;
 					end
 
