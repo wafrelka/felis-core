@@ -39,6 +39,7 @@ module CoreController(
 
 		fetcher_reset = (state != FETCH);
 		executor_reset = (state != EXEC);
+		general_regs[0] = 0;
 
 	end
 
@@ -92,7 +93,8 @@ module CoreController(
 
 				if(reset) begin
 
-					general_regs[out_i] <= 0;
+					if(out_i != 0)
+						general_regs[out_i] <= 0;
 					float_regs[out_i] <= 0;
 
 				end else if(state == EXEC && executor_completed) begin
