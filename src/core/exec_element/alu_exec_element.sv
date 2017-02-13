@@ -7,7 +7,6 @@ module AluExecElement(
 	output logic completed,
 
 	input logic[5:0] inst_num,
-	input logic[15:0] const16,
 	input logic[31:0] const16_x,
 	input logic[4:0] shift5,
 	input logic[31:0] rs,
@@ -126,7 +125,7 @@ module AluExecElement(
 
 				11: begin // LUI
 
-					out[31:16] <= const16;
+					out[31:16] <= const16_x[15:0];
 					out[15:0] <= 16'h0000;
 					completed <= 1;
 
@@ -176,7 +175,7 @@ module AluExecElement(
 				21: begin // ANDI
 
 					out[31:16] <= 16'h0000;
-					out[15:0] <= rs[15:0] & const16;
+					out[15:0] <= rs[15:0] & const16_x[15:0];
 					completed <= 1;
 
 				end
@@ -191,7 +190,7 @@ module AluExecElement(
 				23: begin // ORI
 
 					out[31:16] <= rs[31:16];
-					out[15:0] <= rs[15:0] | const16;
+					out[15:0] <= rs[15:0] | const16_x[15:0];
 					completed <= 1;
 
 				end
@@ -206,7 +205,7 @@ module AluExecElement(
 				25: begin // XORI
 
 					out[31:16] <= rs[31:16];
-					out[15:0] <= rs[15:0] ^ const16;
+					out[15:0] <= rs[15:0] ^ const16_x[15:0];
 					completed <= 1;
 
 				end
