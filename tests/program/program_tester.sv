@@ -4,6 +4,11 @@
 
 module ProgramTester();
 
+	localparam integer UART_BIT_WIDTH = 16;
+	localparam integer FRONT_BIT_WIDTH = 16;
+	localparam integer INST_MEM_BIT_WIDTH = 16;
+	localparam integer MAIN_MEM_BIT_WIDTH = 26;
+
 	logic clk = 0;
 
 	logic[31:0] inst_mem_in_addr;
@@ -50,7 +55,7 @@ module ProgramTester();
 	logic front_out_ready;
 	logic front_reset;
 	logic front_lost;
-	logic[9:0] front_buf_len;
+	logic[FRONT_BIT_WIDTH-1:0] front_buf_len;
 
 	integer fd;
 	logic[31:0] temp, read_temp;
@@ -61,15 +66,16 @@ module ProgramTester();
 	logic uart_busy;
 
 	Core core(.reset(core_reset), .*);
-	Uart #(10, 4, 8, 8) uart(.reset(uart_reset), .lost(uart_lost), .in_buffer_length(), .busy(uart_busy), .*);
+	Uart #(UART_BIT_WIDTH, 4, 8, 8) uart(.reset(uart_reset), .lost(uart_lost),
+		.in_buffer_length(), .busy(uart_busy), .*);
 
-	Uart #(10, 4, 8, 8) front(.reset(front_reset), .lost(front_lost),
+	Uart #(FRONT_BIT_WIDTH, 4, 8, 8) front(.reset(front_reset), .lost(front_lost),
 		.uart_in_data(front_in_data), .uart_in_valid(front_in_valid),
 		.uart_in_ready(front_in_ready), .uart_out_valid(front_out_valid),
 		.uart_out_data(front_out_data), .uart_out_ready(front_out_ready),
 		.in_buffer_length(front_buf_len), .uart_rx(uart_tx), .uart_tx(uart_rx), .busy(), .*);
 
-	Memory #(16) inst_mem(
+	Memory #(INST_MEM_BIT_WIDTH) inst_mem(
 		.clk(clk),
 		.reset(inst_mem_reset),
 		.in_addr(inst_mem_in_addr),
@@ -82,7 +88,7 @@ module ProgramTester();
 		.out_ready(inst_mem_out_ready)
 	);
 
-	Memory #(16) main_mem(
+	Memory #(MAIN_MEM_BIT_WIDTH) main_mem(
 		.clk(clk),
 		.reset(main_mem_reset),
 		.in_addr(main_mem_in_addr),
