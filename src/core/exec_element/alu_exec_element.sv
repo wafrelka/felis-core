@@ -16,12 +16,6 @@ module AluExecElement(
 
 	);
 
-	logic signed [31:0] signed_const16_x;
-	logic signed [31:0] signed_rs;
-	logic signed [31:0] signed_rt;
-	logic signed [63:0] signed_mul_out;
-	logic mul_wait;
-
 	logic[31:0] shift [6];
 	logic[31:0] div_a, div_b, div_c;
 	logic div_enabled, div_completed;
@@ -39,9 +33,6 @@ module AluExecElement(
 
 		endcase
 
-		signed_const16_x = const16_x;
-		signed_rs = rs;
-		signed_rt = rt;
 		div_a = rs;
 
 	end
@@ -99,7 +90,6 @@ module AluExecElement(
 
 			completed <= 0;
 			div_enabled <= 0;
-			mul_wait <= 0;
 
 		end else if(!completed) begin
 
@@ -148,16 +138,11 @@ module AluExecElement(
 
 				13, 15: begin // MULT, MULTI
 
-					if(!mul_wait) begin
-						mul_wait <= 1;
-						if(inst_num == 15)
-							signed_mul_out <= signed_rs * signed_const16_x;
-						else
-							signed_mul_out <= signed_rs * signed_rt;
-					end else begin
-						out <= signed_mul_out;
-						completed <= 1;
-					end
+					if(inst_num == 13)
+						out <= $signed(rs) * $signed(rt);
+					else
+						out <= $signed(rs) * $signed(const16_x);
+					completed <= 1;
 
 				end
 
