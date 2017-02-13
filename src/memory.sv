@@ -34,7 +34,7 @@ module Memory #(
 
 			if(in_valid && !in_ready) begin
 
-				memory[in_addr[29:0]] <= in_data;
+				memory[in_addr[MEM_BIT_WIDTH+1:2]] <= in_data;
 				in_ready <= 1;
 				out_ready <= 0;
 
@@ -44,7 +44,7 @@ module Memory #(
 
 				if(out_valid && !out_ready) begin
 
-					out_data <= memory[out_addr[29:0]];
+					out_data <= memory[out_addr[MEM_BIT_WIDTH+1:2]];
 					out_ready <= 1;
 
 				end else begin
