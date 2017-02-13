@@ -52,7 +52,7 @@ module Chip(
 	Uart uart(.reset(uart_reset), .lost(uart_lost),
 		.busy(uart_busy), .in_buffer_length(uart_buffer_length), .*);
 
-	Memory #(10) inst_mem(
+	Memory #(16) inst_mem(
 		.clk(clk),
 		.reset(inst_mem_reset),
 		.in_addr(inst_mem_in_addr),
@@ -65,7 +65,7 @@ module Chip(
 		.out_ready(inst_mem_out_ready)
 	);
 
-	Memory #(12) main_mem(
+	Memory #(24) main_mem(
 		.clk(clk),
 		.reset(main_mem_reset),
 		.in_addr(main_mem_in_addr),
