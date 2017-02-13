@@ -76,6 +76,9 @@ module FpuAluElemTester();
 
 		// TODO: CVT.W.S
 
+		// MOV.S
+		check(62, 1, 32'hf468fa99, 32'hf468fa99);
+
 		// TODO: SQRT.S
 
 		stop(2);
