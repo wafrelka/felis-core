@@ -118,6 +118,23 @@ module ProgramTester();
 
 	end
 
+	task output_to_file();
+
+		while(front_buf_len > 0) begin
+			front_out_valid = 1;
+			stop(1);
+			assert(front_out_ready == 1);
+			temp[7:0] = front_out_data;
+			front_out_valid = 0;
+			$fwrite(fd, "%c", temp[7:0]);
+			//$write("%c", temp[7:0]);
+			stop(2);
+		end
+
+		$fflush(fd);
+
+	endtask
+
 	initial begin
 
 		front_in_valid = 0;
@@ -129,7 +146,8 @@ module ProgramTester();
 		load_mem_count = 0;
 
 		fd = 0;
-		fd = $fopen("fib9.bin", "rb");
+		fd = $fopen("man_easy32.bin", "rb");
+		//fd = $fopen("fib9.bin", "rb");
 
 		while(fd != 0 && !$feof(fd)) begin
 			void'($fread(read_temp, fd, 0, 32));
@@ -152,30 +170,21 @@ module ProgramTester();
 		load_completed = 1; stop(1);
 		stop(10);
 
-		@(posedge halted);
+		fd = $fopen("output.bin", "w");
 
-		while(uart_busy) begin
-			stop(1);
+		while(!halted) begin
+
+			output_to_file();
+			stop(2**(FRONT_BIT_WIDTH - 2));
+
 		end
 
 		stop(100);
-
-		fd = $fopen("output.bin", "w");
-
-		while(front_buf_len > 0) begin
-			front_out_valid = 1;
-			stop(1);
-			assert(front_out_ready == 1);
-			temp[7:0] = front_out_data;
-			front_out_valid = 0;
-			$fdisplay(fd, "%8b", temp[7:0]);
-			$display("%c", temp[7:0]);
-			stop(2);
-		end
+		output_to_file();
 
 		$fclose(fd);
 
-		$stop();
+		$finish();
 
 	end
 
