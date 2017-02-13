@@ -7,7 +7,6 @@ module MiscExecElement(
 	output logic completed,
 	output logic halted,
 
-	input logic[31:0] pc,
 	input logic[5:0] inst_num,
 	input logic[31:0] rs,
 	input logic[31:0] rd,

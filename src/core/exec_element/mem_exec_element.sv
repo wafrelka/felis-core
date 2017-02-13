@@ -8,7 +8,6 @@ module MemExecElement(
 
 	input logic[5:0] inst_num,
 	input logic[31:0] const16_x,
-	input logic[25:0] addr26,
 	input logic[31:0] rs,
 	input logic[31:0] rt,
 	input logic[31:0] rd,
