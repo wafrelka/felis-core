@@ -25,6 +25,9 @@ module FpuAluExecElement(
 
 	logic itf_valid, itf_ready, itf_sent;
 	logic[31:0] itf_output;
+	logic[31:0] itf_count;
+	localparam logic[31:0] itf_delay = 3;
+
 	logic fti_valid, fti_ready, fti_sent;
 	logic[31:0] fti_output;
 
@@ -75,6 +78,7 @@ module FpuAluExecElement(
 			div_sent <= 0;
 			itf_valid <= 0;
 			itf_sent <= 0;
+			itf_count <= 0;
 			fti_valid <= 0;
 			fti_sent <= 0;
 
@@ -152,8 +156,15 @@ module FpuAluExecElement(
 						itf_valid <= 0;
 					end
 
-					if(itf_ready) begin
+					if(itf_ready && itf_count == 0)
+						itf_count <= 1;
+
+					if(itf_count > 0)
+						itf_count <= itf_count + 1;
+
+					if(itf_count > itf_delay) begin
 						itf_sent <= 0;
+						itf_count <= 0;
 						out <= itf_output;
 						completed <= 1;
 					end
