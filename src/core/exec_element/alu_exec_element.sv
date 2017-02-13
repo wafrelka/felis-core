@@ -68,7 +68,10 @@ module AluExecElement(
 
 						17: begin // Rs_x >> Shift5
 							shift[sbit + 1][31-2**sbit:0] = shift[sbit][31:2**sbit];
-							shift[sbit + 1][31:32-2**sbit] = shift[0][31];
+							if(shift[0][31])
+								shift[sbit + 1][31:32-2**sbit] = ~0;
+							else
+								shift[sbit + 1][31:32-2**sbit] = 0;
 						end
 
 						18: begin // Rs >> Shift5
