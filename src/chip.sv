@@ -45,7 +45,7 @@ module Chip(
 	logic uart_lost;
 	logic core_halted;
 	logic uart_busy;
-	logic uart_buffer_length;
+	logic[9:0] uart_buffer_length;
 
 	Core core(.reset(core_reset), .uart_out_valid(uart_out_valid_core),
 		.halted(core_halted), .*);
