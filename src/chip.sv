@@ -126,11 +126,12 @@ module Chip #(
 
 		debug_signals[0] = pl_reset;
 		debug_signals[1] = pl_completed;
-		debug_signals[2] = 0;
-		debug_signals[3] = uart_out_valid;
-		debug_signals[4] = inst_mem_in_valid;
+		debug_signals[2] = core_halted;
+		debug_signals[3] = (out_buffer_length > 0);
+		// debug_signals[4] = (out_buffer_length > 0);
 		debug_signals[5] = uart_lost;
-		debug_signals[6] = (uart_buffer_length > 0);
+		debug_signals[6] = (in_buffer_length > 0);
+		// debug_signals[7] = (in_buffer_length > 0);
 
 	end
 
@@ -147,8 +148,12 @@ module Chip #(
 		end else if(reset_count > 0) begin
 			reset_count <= reset_count - 1;
 			debug_signals[7] <= 0;
-		end else if(uart_buffer_length > 0) begin
-			debug_signals[7] <= 1;
+			debug_signals[4] <= 0;
+		end else begin
+			if(in_buffer_length > 0)
+				debug_signals[7] <= 1;
+			if(out_buffer_length > 0)
+				debug_signals[4] <= 1;
 		end
 
 	end
