@@ -76,7 +76,6 @@ module FpuAluExecElement(
 			div_sent <= 0;
 			itf_valid <= 0;
 			itf_sent <= 0;
-			itf_count <= 0;
 			fti_valid <= 0;
 			fti_sent <= 0;
 
