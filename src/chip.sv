@@ -12,6 +12,7 @@ module Chip #(
 	) (
 
 	input logic clk,
+	input logic chip_reset,
 	input logic uart_rx,
 	output logic uart_tx
 
@@ -52,11 +53,13 @@ module Chip #(
 	logic pl_reset;
 	logic pl_completed;
 
-	logic[4:0] reset_count = 15;
+	logic[4:0] reset_count = INIT_RESET_COUNT;
 	logic uart_lost;
 	logic core_halted;
 	logic uart_busy;
 	logic[9:0] uart_buffer_length;
+
+	localparam logic[4:0] INIT_RESET_COUNT = 15;
 
 	Core core(.reset(core_reset), .uart_out_valid(uart_out_valid_core),
 		.halted(core_halted), .*);
@@ -126,7 +129,9 @@ module Chip #(
 
 	always_ff @(posedge clk) begin
 
-		if(reset_count > 0)
+		if(chip_reset)
+			reset_count <= INIT_RESET_COUNT;
+		else if(reset_count > 0)
 			reset_count <= reset_count - 1;
 
 	end

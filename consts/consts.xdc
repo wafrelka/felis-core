@@ -11,3 +11,6 @@ set_property PACKAGE_PIN G25     [get_ports uart_rx]
 set_property IOSTANDARD LVCMOS18 [get_ports uart_rx]
 set_property PACKAGE_PIN K26     [get_ports uart_tx]
 set_property IOSTANDARD LVCMOS18 [get_ports uart_tx]
+
+set_property PACKAGE_PIN AN8      [get_ports reset_btn]
+set_property IOSTANDARD  LVCMOS18 [get_ports reset_btn]
