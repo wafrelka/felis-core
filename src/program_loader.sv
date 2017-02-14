@@ -78,6 +78,7 @@ module ProgramLoader(
 
 				prog_size <= buffer;
 				state <= READING_PROG;
+				uart_out_valid <= 1;
 
 			end else if(state == STORING_PROG) begin
 
