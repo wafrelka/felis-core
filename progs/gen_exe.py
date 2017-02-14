@@ -2,7 +2,10 @@ import subprocess, os
 
 if __name__ == '__main__':
 
-    srcs = ['fib/fib9.bin', 'loopback/loopback.bin', 'man_easy/man_easy.bin']
+    srcs = ['fib/fib9.bin',
+        'loopback/loopback.bin',
+        'man_easy/man_easy32.bin',
+        'man_easy/man_easy.bin']
 
     for src in srcs:
 
