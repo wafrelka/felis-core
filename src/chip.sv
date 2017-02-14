@@ -1,9 +1,20 @@
 `timescale 1ns / 100ps
 
-module Chip(
+module Chip #(
+
+	parameter integer UART_BUFFER_BIT_WIDTH,
+	parameter logic[31:0] UART_RECHECK_INTERVAL,
+	parameter logic[31:0] UART_RECV_INTERVAL,
+	parameter logic[31:0] UART_TRANS_INTERVAL,
+	parameter logic[31:0] INST_MEM_BIT_WIDTH,
+	parameter logic[31:0] MAIN_MEM_BIT_WIDTH
+
+	) (
+
 	input logic clk,
 	input logic uart_rx,
 	output logic uart_tx
+
 	);
 
 	logic[31:0] inst_mem_in_addr;
@@ -49,10 +60,15 @@ module Chip(
 
 	Core core(.reset(core_reset), .uart_out_valid(uart_out_valid_core),
 		.halted(core_halted), .*);
-	Uart uart(.reset(uart_reset), .lost(uart_lost),
+	Uart #(
+		UART_BUFFER_BIT_WIDTH,
+		UART_RECHECK_INTERVAL,
+		UART_RECV_INTERVAL,
+		UART_TRANS_INTERVAL
+	) uart(.reset(uart_reset), .lost(uart_lost),
 		.busy(uart_busy), .in_buffer_length(uart_buffer_length), .*);
 
-	Memory #(16) inst_mem(
+	Memory #(INST_MEM_BIT_WIDTH) inst_mem(
 		.clk(clk),
 		.reset(inst_mem_reset),
 		.in_addr(inst_mem_in_addr),

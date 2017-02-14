@@ -8,10 +8,10 @@ module Board(
 
 	logic clk;
 
-	Chip chip(.*);
-
 	always_comb begin
 		clk = sys_clk;
 	end
+
+	Chip #(10, 433, 867, 868, 14, 22) chip(.*);
 
 endmodule
