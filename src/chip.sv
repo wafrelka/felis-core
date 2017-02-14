@@ -65,7 +65,7 @@ module Chip(
 		.out_ready(inst_mem_out_ready)
 	);
 
-	Memory #(24) main_mem(
+	LargeMemory main_mem(
 		.clk(clk),
 		.reset(main_mem_reset),
 		.in_addr(main_mem_in_addr),
