@@ -28,7 +28,6 @@ module UartTransmitterTester();
 		reset = 0;
 		stop(10);
 		assert(uart_tx == 1 && busy == 0);
-		assert(busy == 0);
 
 		data = 8'b00110101;
 		ok = 1;
