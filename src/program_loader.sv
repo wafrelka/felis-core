@@ -17,7 +17,8 @@ module ProgramLoader(
 
 	);
 
-	enum integer {INIT, READING_SIZE, READING_PROG, STORING_PROG, COMPLETED} state;
+	enum integer {INIT, READING_SIZE, STORING_SIZE,
+		READING_PROG, STORING_PROG, COMPLETED} state;
 
 	logic[31:0] prog_counter;
 	logic[31:0] prog_size;
@@ -62,21 +63,8 @@ module ProgramLoader(
 					if(read_size == 3) begin
 
 						read_size <= 0;
-
-						if(state == READING_SIZE) begin
-
-							state <= READING_PROG;
-							prog_size <= buffer;
-
-						end else begin
-
-							state <= STORING_PROG;
-							uart_out_valid <= 0;
-							inst_mem_in_addr <= prog_counter;
-							inst_mem_in_data <= buffer;
-							inst_mem_in_valid <= 1;
-
-						end
+						uart_out_valid <= 0;
+						state <= (state == READING_SIZE ? STORING_SIZE : STORING_PROG);
 
 					end else begin
 
@@ -86,9 +74,20 @@ module ProgramLoader(
 
 				end
 
+			end else if(state == STORING_SIZE) begin
+
+				prog_size <= buffer;
+				state <= READING_PROG;
+
 			end else if(state == STORING_PROG) begin
 
-				if(inst_mem_in_ready) begin
+				if(!inst_mem_in_valid) begin
+
+					inst_mem_in_valid <= 1;
+					inst_mem_in_addr <= prog_counter;
+					inst_mem_in_data <= buffer;
+
+				end else if(inst_mem_in_ready) begin
 
 					inst_mem_in_valid <= 0;
 					prog_counter <= prog_counter + 4;
