@@ -1,4 +1,4 @@
-`timescale 1ps / 100fs
+`timescale 1ns / 100ps
 
 module Executor(
 
