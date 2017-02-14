@@ -10,13 +10,20 @@ module Board(
 	);
 
 	logic clk;
+	logic chip_reset;
+	logic uart_rx, uart_tx;
 
 	// clock: 100 [MHz]
 	// baudrate: 115200 [baud]
-	// uart interval: 868 [Hz/baud]
+	// uart interval: 868.0555... [Hz/baud]
 
-	Chip #(10, 433, 867, 868, 14, 22) chip(
-		.clk(clk), .chip_reset(RESET_BTN), .uart_rx(UART_RX), .uart_tx(UART_TX), .debug_signals(DEBUG_SIGNALS));
+	always_ff @(posedge clk) begin
+		uart_rx <= UART_RX;
+		UART_TX <= uart_tx;
+		chip_reset <= RESET_BTN;
+	end
+
+	Chip #(10, 433, 866, 868, 14, 22) chip(.debug_signals(DEBUG_SIGNALS), .*);
 
 	ClockIP clock(.clk_in1_p(CLK_P), .clk_in1_n(CLK_N), .clk_out1(clk));
 
