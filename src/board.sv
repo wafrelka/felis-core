@@ -5,7 +5,8 @@ module Board(
 	output logic UART_TX,
 	input logic CLK_P,
 	input logic CLK_N,
-	input logic RESET_BTN
+	input logic RESET_BTN,
+	output logic DEBUG_SIGNALS [8]
 	);
 
 	logic clk;
@@ -15,7 +16,7 @@ module Board(
 	// uart interval: 868 [Hz/baud]
 
 	Chip #(10, 433, 867, 868, 14, 22) chip(
-		.clk(clk), .chip_reset(RESET_BTN), .uart_rx(UART_RX), .uart_tx(UART_TX));
+		.clk(clk), .chip_reset(RESET_BTN), .uart_rx(UART_RX), .uart_tx(UART_TX), .debug_signals(DEBUG_SIGNALS));
 
 	ClockIP clock(.clk_in1_p(CLK_P), .clk_in1_n(CLK_N), .clk_out1(clk));
 

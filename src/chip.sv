@@ -14,7 +14,8 @@ module Chip #(
 	input logic clk,
 	input logic chip_reset,
 	input logic uart_rx,
-	output logic uart_tx
+	output logic uart_tx,
+	output logic debug_signals [8]
 
 	);
 
@@ -118,6 +119,19 @@ module Chip #(
 		inst_mem_reset = pl_reset;
 		main_mem_reset = !pl_completed;
 		uart_reset = pl_reset;
+
+	end
+
+	always_comb begin
+
+		debug_signals[0] = pl_reset;
+		debug_signals[1] = pl_completed;
+		debug_signals[2] = !pl_reset;
+		debug_signals[3] = !pl_completed;
+		debug_signals[4] = 0;
+		debug_signals[5] = 0;
+		debug_signals[6] = 0;
+		debug_signals[7] = 0;
 
 	end
 
