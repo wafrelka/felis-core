@@ -58,7 +58,7 @@ module Chip #(
 	logic uart_lost;
 	logic core_halted;
 	logic uart_busy;
-	logic[9:0] uart_buffer_length;
+	logic[9:0] in_buffer_length, out_buffer_length;
 
 	localparam logic[4:0] INIT_RESET_COUNT = 15;
 
@@ -70,7 +70,7 @@ module Chip #(
 		UART_RECV_INTERVAL,
 		UART_TRANS_INTERVAL
 	) uart(.reset(uart_reset), .lost(uart_lost),
-		.busy(uart_busy), .in_buffer_length(uart_buffer_length), .*);
+		.busy(uart_busy), .*);
 
 	Memory #(INST_MEM_BIT_WIDTH) inst_mem(
 		.clk(clk),

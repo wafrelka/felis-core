@@ -21,7 +21,7 @@ module UartControllerTester();
 	logic[7:0] uart_out_data;
 	logic uart_out_ready;
 
-	logic in_buffer_length;
+	logic[2:0] in_buffer_length, out_buffer_length;
 
 	UartController #(3) uart_controller(.lost(), .*);
 
