@@ -29,6 +29,9 @@ module FpuAluExecElement(
 	logic fti_valid, fti_ready, fti_sent;
 	logic[31:0] fti_output;
 
+	logic sqrt_valid, sqrt_ready, sqrt_sent;
+	logic[31:0] sqrt_output;
+
 	FPAddSubIP fp_addsub_submod (
 		.aclk(clk),
 		.s_axis_a_tvalid(addsub_valid), .s_axis_a_tdata(fs),
@@ -63,6 +66,13 @@ module FpuAluExecElement(
 		.m_axis_result_tvalid(itf_ready), .m_axis_result_tdata(itf_output)
 	);
 
+	FPSqrtIP fp_sqrt_submod (
+		.aclk(clk),
+		.s_axis_a_tvalid(sqrt_valid), .s_axis_a_tdata(fs),
+		.m_axis_result_tvalid(sqrt_ready), .m_axis_result_tdata(sqrt_output)
+
+	);
+
 	always_ff @(posedge clk) begin
 
 		if(reset) begin
@@ -78,6 +88,8 @@ module FpuAluExecElement(
 			itf_sent <= 0;
 			fti_valid <= 0;
 			fti_sent <= 0;
+			sqrt_valid <= 0;
+			sqrt_sent <= 0;
 
 		end else if(!completed) begin
 
@@ -163,6 +175,8 @@ module FpuAluExecElement(
 
 				61: begin // CVT.W.S
 
+					// TODO
+
 					if(!fti_valid && !fti_sent) begin
 						fti_valid <= 1;
 						fti_sent <= 1;
@@ -185,7 +199,18 @@ module FpuAluExecElement(
 
 				63: begin // SQRT.S
 
-					// TODO
+					if(!sqrt_valid && !sqrt_sent) begin
+						sqrt_valid <= 1;
+						sqrt_sent <= 1;
+					end else begin
+						sqrt_valid <= 0;
+					end
+
+					if(sqrt_ready) begin
+						sqrt_sent <= 0;
+						out <= sqrt_output;
+						completed <= 1;
+					end
 
 				end
 
