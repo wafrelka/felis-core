@@ -59,11 +59,8 @@ module ProgramLoader(
 						3: buffer[31:24] <= uart_out_data;
 					endcase
 
-					read_size <= read_size + 1;
-
 					if(read_size == 3) begin
 
-						uart_out_valid <= 0;
 						read_size <= 0;
 
 						if(state == READING_SIZE) begin
@@ -74,11 +71,16 @@ module ProgramLoader(
 						end else begin
 
 							state <= STORING_PROG;
+							uart_out_valid <= 0;
 							inst_mem_in_addr <= prog_counter;
 							inst_mem_in_data <= buffer;
 							inst_mem_in_valid <= 1;
 
 						end
+
+					end else begin
+
+						read_size <= read_size + 1;
 
 					end
 
