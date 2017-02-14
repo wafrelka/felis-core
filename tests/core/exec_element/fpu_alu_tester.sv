@@ -82,6 +82,7 @@ module FpuAluElemTester();
 		check(62, 32'hf468fa99, 1, 32'hf468fa99);
 
 		// TODO: SQRT.S
+		check(63, 32'h4b3c614e, 1, 32'h455b9a44); // sqrt(12345678.0)
 
 		stop(2);
 
