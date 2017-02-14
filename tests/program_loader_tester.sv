@@ -63,6 +63,7 @@ module ProgramLoaderTester();
 			assert(inst_mem_in_valid == 1);
 			assert(inst_mem_in_data == 32'b11110000110000111010101001010101);
 			assert(inst_mem_in_addr == expected_addr);
+			assert(completed == 0);
 
 			inst_mem_in_ready = 1;
 			expected_addr += 4;
