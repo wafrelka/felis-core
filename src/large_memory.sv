@@ -20,7 +20,7 @@ module LargeMemory (
 	enum integer {OUT_INACTIVE, OUT_SETTING, OUT_WAITING, OUT_READY} out_state;
 	enum integer {IN_INACTIVE, IN_READY} in_state;
 
-	localparam BRAM_BIT_WIDTH = 19;
+	localparam BRAM_BIT_WIDTH = 20;
 
 	logic bram_en;
 	logic bram_write_en;
