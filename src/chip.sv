@@ -126,12 +126,11 @@ module Chip #(
 
 		debug_signals[0] = pl_reset;
 		debug_signals[1] = pl_completed;
-		debug_signals[2] = !pl_reset;
-		debug_signals[3] = !pl_completed;
-		debug_signals[4] = 0;
-		debug_signals[5] = 0;
-		debug_signals[6] = 0;
-		debug_signals[7] = 0;
+		debug_signals[2] = 0;
+		debug_signals[3] = uart_out_valid;
+		debug_signals[4] = inst_mem_in_valid;
+		debug_signals[5] = uart_lost;
+		debug_signals[6] = (uart_buffer_length > 0);
 
 	end
 
@@ -143,10 +142,14 @@ module Chip #(
 
 	always_ff @(posedge clk) begin
 
-		if(chip_reset)
+		if(chip_reset) begin
 			reset_count <= INIT_RESET_COUNT;
-		else if(reset_count > 0)
+		end else if(reset_count > 0) begin
 			reset_count <= reset_count - 1;
+			debug_signals[7] <= 0;
+		end else if(uart_buffer_length > 0) begin
+			debug_signals[7] <= 1;
+		end
 
 	end
 
