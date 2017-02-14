@@ -21,6 +21,7 @@ module Memory #(
 
 	);
 
+	(* ram_style = "distributed" *)
 	logic[31:0] memory [2 ** MEM_BIT_WIDTH];
 
 	always_ff @(posedge clk) begin

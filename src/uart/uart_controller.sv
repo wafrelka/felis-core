@@ -31,9 +31,12 @@ module UartController #(
 
 	);
 
+	(* ram_style = "distributed" *)
 	logic[7:0] recv_buffer [2 ** BUFFER_BIT_WIDTH];
-	logic[(BUFFER_BIT_WIDTH-1) : 0] recv_head, recv_tail;
+	(* ram_style = "distributed" *)
 	logic[7:0] trans_buffer [2 ** BUFFER_BIT_WIDTH];
+
+	logic[(BUFFER_BIT_WIDTH-1) : 0] recv_head, recv_tail;
 	logic[(BUFFER_BIT_WIDTH-1) : 0] trans_head, trans_tail;
 
 	logic recv_empty, recv_full;
