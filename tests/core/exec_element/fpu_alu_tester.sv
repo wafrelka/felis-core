@@ -73,6 +73,8 @@ module FpuAluElemTester();
 		// CVT.S.W
 		check(60, 1234567, 0, 32'h4996b438);
 		check(60, 0-98765432, 0, 32'hccbc614f);
+		check(60, 1234567, 0, 32'h4996b438);
+		check(60, 0-98765432, 0, 32'hccbc614f);
 
 		// TODO: CVT.W.S
 
