@@ -58,7 +58,7 @@ module Chip #(
 	logic uart_lost;
 	logic core_halted;
 	logic uart_busy;
-	logic[9:0] in_buffer_length, out_buffer_length;
+	logic[UART_BUFFER_BIT_WIDTH-1:0] in_buffer_length, out_buffer_length;
 
 	localparam logic[4:0] INIT_RESET_COUNT = 15;
 
