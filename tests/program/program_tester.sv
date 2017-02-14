@@ -58,7 +58,8 @@ module ProgramTester();
 	logic[FRONT_BIT_WIDTH-1:0] front_buf_len;
 
 	integer fd;
-	logic[31:0] temp, read_temp;
+	logic[31:0] temp;
+	logic[7:0] read_temp;
 	logic[31:0] load_mem_count;
 
 	logic uart_rx;
@@ -150,11 +151,10 @@ module ProgramTester();
 		//fd = $fopen("fib9.bin", "rb");
 
 		while(fd != 0 && !$feof(fd)) begin
-			void'($fread(read_temp, fd, 0, 32));
-			temp[ 7: 0] = read_temp[31:24];
-			temp[15: 8] = read_temp[23:16];
-			temp[23:16] = read_temp[15: 8];
-			temp[31:24] = read_temp[ 7: 0];
+			void'($fread(read_temp, fd, 0, 8)); temp[ 7: 0] = read_temp;
+			void'($fread(read_temp, fd, 0, 8)); temp[15: 8] = read_temp;
+			void'($fread(read_temp, fd, 0, 8)); temp[23:16] = read_temp;
+			void'($fread(read_temp, fd, 0, 8)); temp[31:24] = read_temp;
 			inst_mem_in_addr = load_mem_count;
 			inst_mem_in_data = temp;
 			inst_mem_in_valid = 1;
