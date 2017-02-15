@@ -20,7 +20,7 @@ module UartTransmitter #(
 
 	logic[2:0] trans_count = 0;
 	logic[31:0] clock_count = 0;
-	logic[31:0] buffer;
+	logic[7:0] buffer;
 
 	always_comb begin
 
@@ -78,10 +78,10 @@ module UartTransmitter #(
 
 			end else begin // FINISHED
 
-			if(clock_count + 1 < TRANS_INTERVAL)
-				clock_count <= clock_count + 1;
-			else
-				state <= WAITING;
+				if(clock_count + 1 < TRANS_INTERVAL)
+					clock_count <= clock_count + 1;
+				else
+					state <= WAITING;
 
 			end
 
