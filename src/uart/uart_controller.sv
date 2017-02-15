@@ -100,7 +100,7 @@ module UartController #(
 
 		end else begin
 
-			if(!trans_busy && !trans_empty) begin
+			if(!trans_busy && !trans_ok && !trans_empty) begin
 				trans_data <= trans_buffer[trans_head];
 				trans_head <= trans_head + 1;
 				trans_ok <= 1;
