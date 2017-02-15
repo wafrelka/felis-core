@@ -118,9 +118,13 @@ module UartControllerTester();
 		trans_busy = 0;
 		stop(1);
 		assert(trans_ok == 1 && trans_data == 8'b01011010); stop(1);
+		assert(trans_ok == 0); stop(1);
 		assert(trans_ok == 1 && trans_data == 8'b10100101); stop(1);
+		assert(trans_ok == 0); stop(1);
 		assert(trans_ok == 1 && trans_data == 8'b11100011); stop(1);
+		assert(trans_ok == 0); stop(1);
 		assert(trans_ok == 1 && trans_data == 8'b00011100); stop(1);
+		assert(trans_ok == 0); stop(1);
 
 		// TODO: transmitting data (overflow)
 
@@ -144,6 +148,16 @@ module UartControllerTester();
 		assert(trans_ok == 1 && trans_data == 8'b01011010);
 		trans_busy = 1; stop(1);
 		assert(uart_in_ready == 1);
+
+		uart_in_valid = 0; trans_busy = 0; stop(1);
+		assert(trans_ok == 1 && trans_data == 8'b10100101); stop(2);
+		assert(trans_ok == 1 && trans_data == 8'b11100011); stop(2);
+		assert(trans_ok == 1 && trans_data == 8'b00011100); stop(2);
+		assert(trans_ok == 1 && trans_data == 8'b10100101); stop(2);
+		assert(trans_ok == 1 && trans_data == 8'b11100011); stop(2);
+		assert(trans_ok == 1 && trans_data == 8'b00011100); stop(2);
+		assert(trans_ok == 1 && trans_data == 8'b11111111); stop(2);
+		assert(trans_ok == 0);
 
 		// TODO: simultaneous events (recv_ok and trans_ok)
 
