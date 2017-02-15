@@ -58,7 +58,7 @@ module Chip #(
 	logic uart_lost;
 	logic core_halted;
 	logic uart_busy;
-	logic[UART_BUFFER_BIT_WIDTH-1:0] in_buffer_length, out_buffer_length;
+	logic[UART_BUFFER_BIT_WIDTH-1:0] trans_buffer_length, recv_buffer_length;
 
 	localparam logic[4:0] INIT_RESET_COUNT = 15;
 
@@ -127,11 +127,11 @@ module Chip #(
 		debug_signals[0] = pl_reset;
 		debug_signals[1] = pl_completed;
 		debug_signals[2] = core_halted;
-		debug_signals[3] = (out_buffer_length > 0);
-		// debug_signals[4] = (out_buffer_length > 0);
+		debug_signals[3] = (trans_buffer_length > 0);
+		// debug_signals[4] = (trans_buffer_length > 0);
 		debug_signals[5] = uart_lost;
-		debug_signals[6] = (in_buffer_length > 0);
-		// debug_signals[7] = (in_buffer_length > 0);
+		debug_signals[6] = (recv_buffer_length > 0);
+		// debug_signals[7] = (recv_buffer_length > 0);
 
 	end
 
@@ -150,9 +150,9 @@ module Chip #(
 			debug_signals[7] <= 0;
 			debug_signals[4] <= 0;
 		end else begin
-			if(in_buffer_length > 0)
+			if(recv_buffer_length > 0)
 				debug_signals[7] <= 1;
-			if(out_buffer_length > 0)
+			if(trans_buffer_length > 0)
 				debug_signals[4] <= 1;
 		end
 

@@ -68,13 +68,15 @@ module ProgramTester();
 
 	Core core(.reset(core_reset), .*);
 	Uart #(UART_BIT_WIDTH, 4, 8, 8) uart(.reset(uart_reset), .lost(uart_lost),
-		.in_buffer_length(), .busy(uart_busy), .*);
+		.recv_buffer_length(), .trans_buffer_length(), .busy(uart_busy), .*);
 
 	Uart #(FRONT_BIT_WIDTH, 4, 8, 8) front(.reset(front_reset), .lost(front_lost),
 		.uart_in_data(front_in_data), .uart_in_valid(front_in_valid),
 		.uart_in_ready(front_in_ready), .uart_out_valid(front_out_valid),
 		.uart_out_data(front_out_data), .uart_out_ready(front_out_ready),
-		.in_buffer_length(front_buf_len), .uart_rx(uart_tx), .uart_tx(uart_rx), .busy(), .*);
+		.recv_buffer_length(front_buf_len),
+		.trans_buffer_length(),
+		.uart_rx(uart_tx), .uart_tx(uart_rx), .busy(), .*);
 
 	Memory #(INST_MEM_BIT_WIDTH) inst_mem(
 		.clk(clk),

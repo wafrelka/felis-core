@@ -23,8 +23,8 @@ module Uart #(
 	output logic[7:0] uart_out_data,
 	output logic uart_out_ready,
 
-	output logic[BUFFER_BIT_WIDTH-1:0] in_buffer_length,
-	output logic[BUFFER_BIT_WIDTH-1:0] out_buffer_length
+	output logic[BUFFER_BIT_WIDTH-1:0] recv_buffer_length,
+	output logic[BUFFER_BIT_WIDTH-1:0] trans_buffer_length
 
 	);
 
