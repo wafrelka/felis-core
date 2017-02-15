@@ -131,11 +131,13 @@ module Chip #(
 		debug_signals[0] = pl_reset;
 		debug_signals[1] = pl_completed;
 		debug_signals[2] = core_halted;
+
 		debug_signals[3] = (trans_buffer_length > 0);
-		// debug_signals[4] = (trans_buffer_length > 0);
+		debug_signals[4] = (recv_buffer_length > 0);
 		debug_signals[5] = uart_lost;
-		debug_signals[6] = (recv_buffer_length > 0);
-		// debug_signals[7] = (recv_buffer_length > 0);
+
+		debug_signals[6] = inst_mem_addr_error;
+		debug_signals[7] = main_mem_addr_error;
 
 	end
 
@@ -147,18 +149,10 @@ module Chip #(
 
 	always_ff @(posedge clk) begin
 
-		if(chip_reset) begin
+		if(chip_reset)
 			reset_count <= INIT_RESET_COUNT;
-		end else if(reset_count > 0) begin
+		else if(reset_count > 0)
 			reset_count <= reset_count - 1;
-			debug_signals[7] <= 0;
-			debug_signals[4] <= 0;
-		end else begin
-			if(recv_buffer_length > 0)
-				debug_signals[7] <= 1;
-			if(trans_buffer_length > 0)
-				debug_signals[4] <= 1;
-		end
 
 	end
 
