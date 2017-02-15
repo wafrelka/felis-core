@@ -17,7 +17,9 @@ module Memory #(
 	input logic[31:0] out_addr,
 	input logic out_valid,
 	output logic[31:0] out_data,
-	output logic out_ready
+	output logic out_ready,
+
+	output logic addr_error
 
 	);
 
@@ -30,6 +32,7 @@ module Memory #(
 
 			in_ready <= 0;
 			out_ready <= 0;
+			addr_error <= 0;
 
 		end else begin
 
@@ -39,6 +42,9 @@ module Memory #(
 				in_ready <= 1;
 				out_ready <= 0;
 
+				if(in_addr[31:MEM_BIT_WIDTH+2] != 0)
+					addr_error <= 1;
+
 			end else begin
 
 				in_ready <= 0;
@@ -47,6 +53,9 @@ module Memory #(
 
 					out_data <= memory[out_addr[MEM_BIT_WIDTH+1:2]];
 					out_ready <= 1;
+
+					if(out_addr[31:MEM_BIT_WIDTH+2] != 0)
+						addr_error <= 1;
 
 				end else begin
 

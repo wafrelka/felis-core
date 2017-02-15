@@ -7,7 +7,7 @@ module MemoryTester();
 
 	logic[31:0] in_addr, out_addr;
 	logic[31:0] in_data, out_data;
-	logic in_valid, in_ready, out_valid, out_ready;
+	logic in_valid, in_ready, out_valid, out_ready, addr_error;
 
 	Memory #(5) memory(.*);
 
@@ -63,6 +63,31 @@ module MemoryTester();
 		out_addr = 32'h00000010; out_valid = 1; stop(1);
 		assert(out_ready == 1 && out_data == 32'h87654321);
 		out_valid = 0; stop(1);
+
+		reset = 1; in_valid = 0; out_valid = 0; stop(2);
+		reset = 0; stop(2);
+		in_data = 0;
+
+		in_addr = 128; stop(3);
+		assert(addr_error == 0);
+		in_addr = 127; in_valid = 1; stop(1);
+		assert(in_ready == 1 && addr_error == 0);
+		in_valid = 0; stop(1);
+		assert(in_ready == 0 && addr_error == 0);
+		in_addr = 128; in_valid = 1; stop(1);
+		assert(in_ready == 1 && addr_error == 1);
+
+		reset = 1; in_valid = 0; out_valid = 0; stop(2);
+		reset = 0; stop(2);
+
+		out_addr = 128; stop(3);
+		assert(addr_error == 0);
+		out_addr = 127; out_valid = 1; stop(1);
+		assert(out_ready == 1 && addr_error == 0);
+		out_valid = 0; stop(1);
+		assert(out_ready == 0 && addr_error == 0);
+		out_addr = 128; out_valid = 1; stop(1);
+		assert(out_ready == 1 && addr_error == 1);
 
 		$finish();
 

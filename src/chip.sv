@@ -60,6 +60,8 @@ module Chip #(
 	logic uart_busy;
 	logic[UART_BUFFER_BIT_WIDTH-1:0] trans_buffer_length, recv_buffer_length;
 
+	logic inst_mem_addr_error, main_mem_addr_error;
+
 	localparam logic[4:0] INIT_RESET_COUNT = 15;
 
 	Core core(.reset(core_reset), .uart_out_valid(uart_out_valid_core),
@@ -82,7 +84,8 @@ module Chip #(
 		.out_addr(inst_mem_out_addr),
 		.out_valid(inst_mem_out_valid),
 		.out_data(inst_mem_out_data),
-		.out_ready(inst_mem_out_ready)
+		.out_ready(inst_mem_out_ready),
+		.addr_error(inst_mem_addr_error)
 	);
 
 	LargeMemory main_mem(
@@ -95,7 +98,8 @@ module Chip #(
 		.out_addr(main_mem_out_addr),
 		.out_valid(main_mem_out_valid),
 		.out_data(main_mem_out_data),
-		.out_ready(main_mem_out_ready)
+		.out_ready(main_mem_out_ready),
+		.addr_error(main_mem_addr_error)
 	);
 
 	ProgramLoader prog_loader(

@@ -13,7 +13,9 @@ module LargeMemory (
 	input logic[31:0] out_addr,
 	input logic out_valid,
 	output logic[31:0] out_data,
-	output logic out_ready
+	output logic out_ready,
+
+	output logic addr_error
 
 	);
 
@@ -21,6 +23,7 @@ module LargeMemory (
 	enum integer {IN_INACTIVE, IN_READY} in_state;
 
 	localparam BRAM_BIT_WIDTH = 20;
+	localparam BRAM_MAX_SIZE = 655360;
 
 	logic bram_en;
 	logic bram_write_en;
@@ -48,6 +51,7 @@ module LargeMemory (
 			bram_data <= 0;
 			in_state <= IN_INACTIVE;
 			out_state <= OUT_INACTIVE;
+			addr_error <= 0;
 
 		end else begin
 
@@ -55,6 +59,9 @@ module LargeMemory (
 
 				bram_data <= in_data;
 				bram_addr <= in_addr[BRAM_BIT_WIDTH+1:2];
+
+				if(in_addr[31:2] >= BRAM_MAX_SIZE)
+					addr_error <= 1;
 
 				case(in_state)
 
@@ -77,6 +84,9 @@ module LargeMemory (
 				in_state <= IN_INACTIVE;
 
 				if(out_valid) begin
+
+					if(out_addr[31:2] >= BRAM_MAX_SIZE)
+						addr_error <= 1;
 
 					case(out_state)
 
