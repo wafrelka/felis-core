@@ -159,11 +159,58 @@ module UartControllerTester();
 		assert(trans_ok == 1 && trans_data == 8'b11111111); stop(2);
 		assert(trans_ok == 0);
 
-		// TODO: simultaneous events (recv_ok and trans_ok)
+		// TODO: simultaneous events (recv_ok and out_valid)
 
-		// TODO: simultaneous events (recv_ok and in_valid)
+		// TODO: simultaneous events (trans_ok and in_valid)
 
-		// TODO: simultaneous events (trans_ok and out_valid)
+		assert(trans_buffer_length == 0);
+		trans_busy = 1;
+		uart_in_data = 8'ha3; uart_in_valid = 1; stop(2);
+		uart_in_data = 8'h1f; uart_in_valid = 1; stop(2);
+		uart_in_data = 8'h54; uart_in_valid = 1; stop(2);
+		uart_in_data = 8'h7c; uart_in_valid = 1; stop(2);
+
+		uart_in_data = 8'hdd; uart_in_valid = 1;
+		trans_busy = 0;
+		stop(1);
+		assert(trans_buffer_length == 4);
+		assert(trans_ok == 1 && trans_data == 8'ha3);
+		assert(uart_in_ready == 1);
+
+		trans_busy = 1; uart_in_valid = 1;
+		uart_in_data = 6'haa; stop(2);
+		uart_in_data = 6'hbb; stop(2);
+		uart_in_data = 6'hcc; stop(2);
+		uart_in_valid = 0; stop(2);
+
+		assert(trans_buffer_length == 7);
+
+		uart_in_data = 6'h21; uart_in_valid = 1;
+		trans_busy = 0;
+		stop(1);
+		assert(trans_buffer_length == 6);
+		assert(trans_ok == 1 && trans_data == 8'h1f);
+		assert(uart_in_ready == 0);
+		trans_busy = 1;
+		stop(1);
+		assert(trans_buffer_length == 7);
+		assert(trans_ok == 0);
+		assert(uart_in_ready == 1);
+
+		uart_in_data = 6'h34; uart_in_valid = 1;
+		trans_busy = 0;
+		stop(1);
+		assert(trans_buffer_length == 6);
+		uart_in_valid = 0;
+		stop(1);
+		assert(trans_buffer_length == 6);
+		uart_in_valid = 1;
+		stop(1);
+		assert(trans_buffer_length == 6);
+		assert(trans_ok == 1 && trans_data == 8'h7c);
+		assert(uart_in_ready == 1);
+
+		stop(2);
 
 		$finish();
 
