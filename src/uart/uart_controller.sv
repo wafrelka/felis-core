@@ -26,8 +26,8 @@ module UartController #(
 	output logic[7:0] uart_out_data,
 	output logic uart_out_ready,
 
-	output logic[BUFFER_BIT_WIDTH-1:0] in_buffer_length,
-	output logic[BUFFER_BIT_WIDTH-1:0] out_buffer_length
+	output logic[(BUFFER_BIT_WIDTH-1) : 0] in_buffer_length,
+	output logic[(BUFFER_BIT_WIDTH-1) : 0] out_buffer_length
 
 	);
 
@@ -36,8 +36,8 @@ module UartController #(
 	(* ram_style = "distributed" *)
 	logic[7:0] trans_buffer [2 ** BUFFER_BIT_WIDTH];
 
-	logic[(BUFFER_BIT_WIDTH-1) : 0] recv_head, recv_tail;
-	logic[(BUFFER_BIT_WIDTH-1) : 0] trans_head, trans_tail;
+	logic[(BUFFER_BIT_WIDTH-1) : 0] recv_head, recv_tail, recv_tail_next;
+	logic[(BUFFER_BIT_WIDTH-1) : 0] trans_head, trans_tail, trans_tail_next;
 
 	logic recv_empty, recv_full;
 	logic trans_empty, trans_full;
@@ -45,10 +45,12 @@ module UartController #(
 	always_comb begin
 		recv_reset = reset;
 		trans_reset = reset;
+		recv_tail_next = recv_tail + 1;
+		trans_tail_next = trans_tail + 1;
 		recv_empty = (recv_head == recv_tail);
-		recv_full = (recv_tail + 1 == recv_head);
+		recv_full = (recv_tail_next == recv_head);
 		trans_empty = (trans_head == trans_tail);
-		trans_full = (trans_tail + 1 == trans_head);
+		trans_full = (trans_tail_next == trans_head);
 		in_buffer_length = (recv_tail - recv_head);
 		out_buffer_length = (trans_tail - trans_head);
 	end
