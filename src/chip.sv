@@ -6,8 +6,7 @@ module Chip #(
 	parameter logic[31:0] UART_RECHECK_INTERVAL,
 	parameter logic[31:0] UART_RECV_INTERVAL,
 	parameter logic[31:0] UART_TRANS_INTERVAL,
-	parameter logic[31:0] INST_MEM_BIT_WIDTH,
-	parameter logic[31:0] MAIN_MEM_BIT_WIDTH
+	parameter logic[31:0] INST_MEM_BIT_WIDTH
 
 	) (
 
