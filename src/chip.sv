@@ -127,7 +127,7 @@ module Chip #(
 
 	always_comb begin
 
-		debug_signals[0] = pl_reset;
+		debug_signals[0] = uart_out_valid;
 		debug_signals[1] = pl_completed;
 		debug_signals[2] = core_halted;
 
