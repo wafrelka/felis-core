@@ -37,8 +37,18 @@ module LargeMemory (
 	);
 
 	always_comb begin
+
 		in_ready = (in_state == IN_READY);
 		out_ready = (out_state == OUT_READY);
+
+		if(in_valid)
+			bram_addr = in_addr[BRAM_BIT_WIDTH+1:2];
+		else
+			bram_addr = out_addr[BRAM_BIT_WIDTH+1:2];
+
+		bram_write_en = (in_valid && (in_state == IN_INACTIVE));
+		bram_data = in_data;
+
 	end
 
 	always_ff @(posedge clk) begin
@@ -46,9 +56,6 @@ module LargeMemory (
 		if(reset) begin
 
 			bram_en <= 1;
-			bram_write_en <= 0;
-			bram_addr <= 0;
-			bram_data <= 0;
 			in_state <= IN_INACTIVE;
 			out_state <= OUT_INACTIVE;
 			addr_error <= 0;
@@ -57,9 +64,6 @@ module LargeMemory (
 
 			if(in_valid) begin
 
-				bram_data <= in_data;
-				bram_addr <= in_addr[BRAM_BIT_WIDTH+1:2];
-
 				if(in_addr[31:2] >= BRAM_MAX_SIZE)
 					addr_error <= 1;
 
@@ -67,20 +71,16 @@ module LargeMemory (
 
 					IN_INACTIVE: begin
 						in_state <= IN_READY;
-						bram_write_en <= 1;
 					end
 
 					default: begin
 						in_state <= IN_INACTIVE;
-						bram_write_en <= 0;
 					end
 
 				endcase
 
 			end else begin
 
-				bram_addr <= out_addr[BRAM_BIT_WIDTH+1:2];
-				bram_write_en <= 0;
 				in_state <= IN_INACTIVE;
 
 				if(out_valid) begin
@@ -91,10 +91,6 @@ module LargeMemory (
 					case(out_state)
 
 						OUT_INACTIVE: begin
-							out_state <= OUT_SETTING;
-						end
-
-						OUT_SETTING: begin
 							out_state <= OUT_WAITING;
 						end
 

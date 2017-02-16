@@ -29,7 +29,7 @@ module LargeMemoryTester();
 		out_valid = 0;
 		stop(2);
 		reset = 0;
-		stop(2);
+		stop(4);
 
 		in_addr = 36; in_valid = 1; in_data = 32'hefefefef; stop(1);
 		assert(in_ready == 1);
@@ -43,13 +43,13 @@ module LargeMemoryTester();
 		assert(in_ready == 1);
 		in_valid = 0; stop(1);
 
-		out_addr = 40; out_valid = 1; stop(3);
+		out_addr = 40; out_valid = 1; stop(2);
 		assert(out_ready == 1 && out_data == 32'hc3c3c3c3);
 		out_valid = 0; stop(1);
 		assert(out_ready == 0);
-		out_addr = 36; out_valid = 1; stop(3);
+		out_addr = 36; out_valid = 1; stop(2);
 		assert(out_ready == 1 && out_data == 32'hefefefef);
-		out_addr = 32; out_valid = 1; stop(3);
+		out_addr = 32; out_valid = 1; stop(2);
 		assert(out_ready == 0);
 		stop(1);
 		assert(out_ready == 1 && out_data == 32'h35353535);
@@ -73,11 +73,11 @@ module LargeMemoryTester();
 
 		out_addr = BRAM_MIN_INVALID; stop(3);
 		assert(addr_error == 0);
-		out_addr = BRAM_MAX_VALID; out_valid = 1; stop(3);
+		out_addr = BRAM_MAX_VALID; out_valid = 1; stop(2);
 		assert(out_ready == 1 && addr_error == 0);
 		out_valid = 0; stop(1);
 		assert(out_ready == 0 && addr_error == 0);
-		out_addr = BRAM_MIN_INVALID; out_valid = 1; stop(3);
+		out_addr = BRAM_MIN_INVALID; out_valid = 1; stop(2);
 		assert(out_ready == 1 && addr_error == 1);
 
 		$finish();
