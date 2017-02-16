@@ -46,6 +46,11 @@ module Core(
 	logic[31:0] exec_reg_out;
 	logic[31:0] exec_pc_out;
 
+	logic[4:0] in_reg_num [3];
+	logic[4:0] out_reg_num;
+	logic out_general_reg;
+	logic out_float_reg;
+
 	CoreController core_controller(.*);
 	Fetcher fetcher(.reset(fetcher_reset), .completed(fetcher_completed), .*);
 	Executor executor(.reset(executor_reset), .completed(executor_completed), .*);

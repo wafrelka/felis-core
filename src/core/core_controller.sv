@@ -8,14 +8,15 @@ module CoreController(
 	output logic fetcher_reset,
 	input logic fetcher_completed,
 	output logic[31:0] pc,
-	input logic[31:0] instruction,
 
 	output logic executor_reset,
 	input logic executor_completed,
-	output logic[5:0] inst_num,
-	output logic[15:0] const16,
-	output logic[4:0] shift5,
-	output logic[25:0] addr26,
+
+	input logic[4:0] in_reg_num [3],
+	input logic[4:0] out_reg_num,
+	input logic out_general_reg,
+	input logic out_float_reg,
+
 	output logic[31:0] float_in_regs [3],
 	output logic[31:0] general_in_regs [3],
 	input logic[31:0] exec_reg_out,
@@ -23,17 +24,10 @@ module CoreController(
 
 	);
 
-	enum integer {INIT, FETCH, DECODE, EXEC} state;
+	enum integer {INIT, FETCH, EXEC} state;
 
 	logic[31:0] general_regs [32];
 	logic[31:0] float_regs [32];
-
-	logic[4:0] in_reg_num [3];
-	logic[4:0] out_reg_num;
-	logic out_general_reg;
-	logic out_float_reg;
-
-	Decoder decoder(.*);
 
 	always_comb begin
 
@@ -54,8 +48,6 @@ module CoreController(
 			if(state == INIT)
 				state <= FETCH;
 			else if(state == FETCH && fetcher_completed)
-				state <= DECODE;
-			else if(state == DECODE)
 				state <= EXEC;
 			else if(state == EXEC && executor_completed)
 				state <= FETCH;
