@@ -23,7 +23,7 @@ module Board(
 		chip_reset <= RESET_BTN;
 	end
 
-	Chip #(10, 433, 866, 868, 14) chip(.debug_signals(DEBUG_SIGNALS), .*);
+	Chip #(10, 433, 866, 868, 16) chip(.debug_signals(DEBUG_SIGNALS), .*);
 
 	ClockIP clock(.clk_in1_p(CLK_P), .clk_in1_n(CLK_N), .clk_out1(clk));
 
