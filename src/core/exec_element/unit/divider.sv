@@ -24,8 +24,10 @@ module Divider(
 		.aclk(clk),
 		.s_axis_divisor_tvalid(div_valid),
 		.s_axis_divisor_tdata(divisor),
+		.s_axis_divisor_tready(),
 		.s_axis_dividend_tvalid(div_valid),
 		.s_axis_dividend_tdata(dividend),
+		.s_axis_dividend_tready(),
 		.m_axis_dout_tvalid(div_ready),
 		.m_axis_dout_tdata(div_output)
 	);
