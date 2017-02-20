@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import sys, os, struct
 
@@ -21,4 +21,13 @@ if __name__ == '__main__':
     with open(uart_path, "wb") as uart:
         uart.write(struct.pack("<I", size))
         with open(bin_path, "rb") as binary:
-            uart.write(binary.read())
+            while True:
+                data = binary.read(1024)
+                if not data:
+                    break
+                uart.write(data)
+                sys.stdout.write(".")
+                sys.stdout.flush()
+            sys.stdout.write("\n")
+
+    print("finished")
